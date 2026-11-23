@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Разрешительные документы для ФТС: виды и назначение</title>
+<style>
+  :root{
+    --bg:#eef2f7;
+    --ink:#16202e;
+    --muted:#5b6779;
+    --line:#d5dee9;
+    --accent:#1f4e79;
+    --accent-2:#2f6b95;
+    --accent-soft:#eaf2f9;
+    --green:#1f6b3f;
+    --green-soft:#e9f6ee;
+    --red:#a8231b;
+    --red-soft:#fdf0ee;
+    --amber:#8a5a06;
+    --amber-soft:#fff7e3;
+    --radius:16px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font:16px/1.58 system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .wrap{max-width:960px;margin:0 auto;padding:0 18px 70px;}
+
+  /* ================= HERO ================= */
+  .hero{
+    position:relative;
+    overflow:hidden;
+    margin:22px 0 0;
+    padding:38px 36px 34px;
+    border-radius:22px;
+    color:#fff;
+    background:linear-gradient(135deg,#0f2c44 0%,#1f4e79 52%,#3a769f 100%);
+    box-shadow:0 16px 38px rgba(18,45,70,.22);
+  }
+  .hero::after{
+    content:"";
+    position:absolute;
+    right:-90px;top:-100px;
+    width:300px;height:300px;
+    border-radius:50%;
+    background:radial-gradient(circle,rgba(255,255,255,.14),rgba(255,255,255,0) 70%);
+  }
+  .hero .badge-top{
+    display:inline-block;
+    padding:5px 13px;
+    border-radius:100px;
+    background:rgba(255,255,255,.16);
+    border:1px solid rgba(255,255,255,.28);
+    font-size:12px;
+    font-weight:600;
+  }
+  .hero h1{
+    margin:14px 0 10px;
+    max-width:820px;
+    font-size:30px;
+    line-height:1.22;
+    letter-spacing:-.015em;
+  }
+  .hero .sub{
+    margin:0;
+    max-width:760px;
+    font-size:16.4px;
+    line-height:1.5;
+    color:#dce8f2;
+  }
+  .hero-pills{display:flex;flex-wrap:wrap;gap:9px;margin-top:20px;}
+  .hero-pills span{
+    padding:7px 14px;
+    border-radius:100px;
+    background:rgba(255,255,255,.12);
+    border:1px solid rgba(255,255,255,.25);
+    font-size:13.4px;
+    font-weight:600;
+  }
+
+  /* ================= TOC ================= */
+  .toc{
+    position:sticky;
+    top:0;
+    z-index:30;
+    margin:16px 0 26px;
+    background:rgba(255,255,255,.94);
+    backdrop-filter:blur(8px);
+    border:1px solid var(--line);
+    border-radius:14px;
+    box-shadow:0 6px 18px rgba(20,40,70,.07);
+  }
+  .toc-inner{display:flex;gap:4px;padding:9px 10px;overflow-x:auto;scrollbar-width:thin;}
+  .toc a{
+    flex:0 0 auto;
+    padding:6px 10px;
+    border-radius:8px;
+    color:#2b3b4f;
+    font-size:13.2px;
+    font-weight:600;
+    text-decoration:none;
+    white-space:nowrap;
+  }
+  .toc a:hover{background:var(--accent-soft);color:var(--accent);}
+
+  /* ================= CARDS ================= */
+  .card{
+    margin:0 0 20px;
+    padding:24px 26px;
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    box-shadow:0 2px 4px rgba(20,40,70,.04),0 10px 24px rgba(20,40,70,.05);
+    scroll-margin-top:78px;
+  }
+  .section-kicker{
+    display:inline-block;
+    margin-bottom:8px;
+    padding:3px 9px;
+    border-radius:6px;
+    background:var(--accent-soft);
+    color:var(--accent);
+    font-size:11.2px;
+    font-weight:700;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+  }
+  .card h2{margin:0 0 8px;font-size:22px;line-height:1.28;letter-spacing:-.01em;}
+  .card .lead{margin:0 0 14px;color:#38465a;font-size:15.6px;}
+
+  h3{font-size:16px;margin:18px 0 7px;line-height:1.35;}
+  p{margin:8px 0;}
+  ul,ol{margin:8px 0;padding-left:22px;}
+  li{margin:5px 0;}
+  a{color:var(--accent);text-decoration:none;border-bottom:1px solid #b9cfe2;word-break:break-word;}
+  a:hover{border-bottom-color:var(--accent);}
+
+  /* ================= LEGEND / TAGS ================= */
+  .legend{display:flex;flex-wrap:wrap;gap:8px 14px;margin:0 0 16px;font-size:13px;color:var(--muted);}
+  .tag{
+    display:inline-block;
+    padding:3px 8px;
+    border-radius:5px;
+    border:1px solid transparent;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+  }
+  .tag-norm{background:#e8f0fb;color:#1f4e79;border-color:#c5d9ef;}
+  .tag-fts{background:#e3f2f1;color:#0e5a5a;border-color:#b6dbd8;}
+  .tag-prac{background:#fdf3e2;color:#7a4f06;border-color:#ecd3a6;}
+  .tag-red{background:var(--red-soft);color:var(--red);border-color:#e7bdb7;}
+  .tag-green{background:var(--green-soft);color:var(--green);border-color:#bfe0cc;}
+
+  /* ================= BOXES ================= */
+  .note,.warning,.fine,.deadline,.ausn,.osno,.summary{
+    margin:14px 0;
+    padding:14px 17px;
+    border-radius:12px;
+    font-size:14.6px;
+  }
+  .note{background:#f5f8fb;border:1px solid #dbe5ee;border-left:4px solid #8aa6c0;}
+  .warning{background:var(--amber-soft);border:1px solid #ecd9a8;border-left:5px solid #b8860b;}
+  .fine{background:var(--red-soft);border:1px solid #eccac5;border-left:5px solid var(--red);}
+  .deadline{background:var(--accent-soft);border:1px solid #c9dcef;border-left:5px solid var(--accent);}
+  .ausn{background:var(--green-soft);border:1px solid #c6e3d2;border-left:5px solid var(--green);}
+  .osno{background:#f2f6fc;border:1px solid #c8d9ee;border-left:5px solid #2c5f96;}
+  .summary{
+    padding:20px 22px;
+    border:0;
+    color:#eef5fb;
+    background:linear-gradient(135deg,#173752,#1f4e79);
+  }
+  .summary h3{margin-top:0;color:#fff;}
+  .summary ol{padding-left:20px;}
+  .summary li{margin:7px 0;}
+  .box-title{
+    display:block;
+    margin-bottom:4px;
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    opacity:.9;
+  }
+
+  /* ================= REPORT CARDS ================= */
+  .report{
+    margin:14px 0;
+    padding:16px 18px;
+    background:#fcfdfe;
+    border:1px solid var(--line);
+    border-radius:14px;
+    scroll-margin-top:78px;
+  }
+  .report-head{display:flex;gap:14px;align-items:flex-start;}
+  .num{
+    flex:0 0 44px;
+    width:44px;height:44px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:10px;
+    background:var(--accent);
+    color:#fff;
+    font-size:15px;
+    font-weight:800;
+    text-align:center;
+    line-height:1.1;
+  }
+  .num.green{background:var(--green);}
+  .num.grey{background:#5d6c80;}
+  .num.amber{background:#a8741a;}
+  .report h3{margin:1px 0 2px;font-size:16.5px;}
+  .report .sub{margin:0;font-size:13.8px;color:var(--muted);}
+  .report .tags{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 8px;}
+  .meta{margin:0;padding:0;border:0;}
+  .meta > div{
+    display:grid;
+    grid-template-columns:150px 1fr;
+    gap:10px;
+    padding:7px 0;
+    border-top:1px dotted var(--line);
+    font-size:14.2px;
+  }
+  .meta dt{margin:0;font-weight:700;color:#2c3a4d;}
+  .meta dd{margin:0;color:#33415a;}
+
+  /* ================= FLOW ================= */
+  .flow{
+    display:flex;
+    align-items:stretch;
+    justify-content:center;
+    gap:4px;
+    margin:16px 0;
+    padding:18px 14px;
+    background:#fbfcfe;
+    border:1px solid var(--line);
+    border-radius:14px;
+  }
+  .flow .node{
+    flex:1 1 0;
+    min-width:0;
+    padding:11px 9px;
+    background:#fff;
+    border:1.5px solid #c9dcef;
+    border-top:4px solid var(--accent);
+    border-radius:9px;
+    text-align:center;
+    font-size:12.8px;
+    line-height:1.4;
+  }
+  .flow .node b{display:block;margin-bottom:3px;font-size:13.4px;}
+  .flow .node span{color:var(--muted);font-size:12px;}
+  .flow .node.hi{background:var(--accent-soft);border-top-color:var(--accent-2);}
+  .flow .arrow{
+    flex:0 0 20px;
+    display:flex;align-items:center;justify-content:center;
+    color:var(--accent);
+    font-size:18px;font-weight:700;
+  }
+  .flow .arrow::before{content:"→";}
+  .flow-caption{margin:-6px 0 14px;font-size:12.6px;color:var(--muted);text-align:center;line-height:1.45;}
+
+  /* ================= TRAFFIC ================= */
+  figure.lights{
+    margin:16px 0 6px;
+    padding:16px;
+    background:#fbfcfe;
+    border:1px solid var(--line);
+    border-radius:14px;
+  }
+  figure.lights figcaption{font-size:12.8px;color:var(--muted);margin-bottom:12px;}
+  .lights-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+  .light{padding:14px;border-radius:12px;border:1px solid;font-size:13.8px;line-height:1.45;}
+  .light b{display:block;margin:6px 0 4px;font-size:14.6px;}
+  .light p{margin:0;color:#3a4557;}
+  .light .dot{display:inline-block;width:15px;height:15px;border-radius:50%;}
+  .light.red{background:var(--red-soft);border-color:#eccac5;}
+  .light.red .dot{background:#c0392b;box-shadow:0 0 0 4px rgba(192,57,43,.14);}
+  .light.yellow{background:var(--amber-soft);border-color:#ecd9a8;}
+  .light.yellow .dot{background:#d9a11a;box-shadow:0 0 0 4px rgba(217,161,26,.16);}
+  .light.green{background:var(--green-soft);border-color:#bfe0cc;}
+  .light.green .dot{background:#2e8b57;box-shadow:0 0 0 4px rgba(46,139,87,.15);}
+
+  /* ================= TABLE ================= */
+  .table-wrap{margin:14px 0;overflow-x:auto;border:1px solid var(--line);border-radius:12px;}
+  table{width:100%;min-width:720px;border-collapse:collapse;background:#fff;font-size:13.8px;}
+  caption{caption-side:top;padding:8px 10px 6px;background:#f7f9fc;color:var(--muted);font-size:12.8px;text-align:left;}
+  th,td{
+    padding:9px 11px;
+    border-right:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    text-align:left;
+    vertical-align:top;
+  }
+  th:last-child,td:last-child{border-right:0;}
+  tbody tr:last-child td{border-bottom:0;}
+  th{background:#eef4fa;font-size:13.1px;font-weight:700;}
+  tbody tr:nth-child(even) td{background:#fafbfd;}
+  .yes{color:var(--green);font-weight:700;}
+  .no{color:var(--red);font-weight:700;}
+
+  /* ================= CHECKLIST ================= */
+  .checklist{list-style:none;margin:10px 0;padding-left:0;}
+  .checklist li{position:relative;margin:9px 0;padding-left:32px;}
+  .checklist li::before{content:"☐";position:absolute;left:0;top:-1px;color:var(--accent);font-size:19px;}
+
+  /* ================= GLOSSARY ================= */
+  dl.glossary{display:grid;grid-template-columns:1fr 1fr;gap:0 28px;margin:12px 0;}
+  dl.glossary > div{padding:8px 0;border-bottom:1px dotted var(--line);}
+  dl.glossary dt{font-weight:700;font-size:14.4px;}
+  dl.glossary dd{margin:2px 0 0;font-size:14px;color:#3a465c;}
+
+  /* ================= SOURCES ================= */
+  .sources .source{margin:16px 0;padding:4px 0 4px 14px;border-left:3px solid #c3d3e2;}
+  .sources .source h3{margin:0 0 3px;font-size:15px;}
+  .sources .req{margin:0 0 5px;font-size:12.8px;color:var(--muted);}
+  .sources .source p{margin:5px 0;font-size:14.2px;}
+  .sources .link{font-size:12.9px;}
+  .actual{
+    margin-top:18px;
+    padding:11px 14px;
+    background:#f2f6fa;
+    border:1px dashed #c3d3e2;
+    border-radius:10px;
+    font-size:13.4px;
+    color:#3d4b60;
+  }
+
+  .flag{
+    display:inline-block;
+    padding:0 5px;
+    border-radius:3px;
+    background:var(--amber-soft);
+    color:#6d4f00;
+    font-size:11.5px;
+    font-weight:700;
+    white-space:nowrap;
+  }
+  .small{font-size:13px;color:var(--muted);}
+
+  footer{
+    margin-top:26px;
+    padding-top:14px;
+    border-top:1px solid var(--line);
+    font-size:12.7px;
+    line-height:1.5;
+    color:var(--muted);
+  }
+
+  /* ================= UP ================= */
+  .up{
+    position:fixed;
+    right:20px;bottom:20px;
+    z-index:40;
+    display:flex;align-items:center;justify-content:center;
+    width:46px;height:46px;
+    border-radius:50%;
+    background:var(--accent);
+    color:#fff;
+    font-size:19px;
+    text-decoration:none;
+    box-shadow:0 8px 20px rgba(20,50,80,.28);
+  }
+  .up:hover{background:#163b5c;}
+
+  /* ================= ADAPTIVE ================= */
+  @media (max-width:800px){
+    .hero{padding:28px 22px 26px;border-radius:18px;}
+    .hero h1{font-size:24px;}
+    .hero .sub{font-size:15.2px;}
+    .card{padding:20px 18px;}
+    .flow{flex-direction:column;gap:0;}
+    .flow .arrow{flex:0 0 28px;}
+    .flow .arrow::before{content:"↓";}
+    .flow .node{text-align:left;padding:11px 13px;}
+    .lights-grid{grid-template-columns:1fr;}
+    dl.glossary{grid-template-columns:1fr;}
+    .meta > div{grid-template-columns:1fr;gap:2px;}
+    .toc{border-radius:10px;}
+  }
+
+  /* ================= PRINT ================= */
+  @media print{
+    @page{margin:13mm 12mm;}
+    body{background:#fff;color:#000;font-size:10.5pt;line-height:1.4;}
+    .wrap{max-width:none;padding:0;}
+    .hero{
+      padding:0 0 10pt;
+      border:1.5pt solid #000;
+      border-radius:0;
+      background:#fff !important;
+      color:#000;
+      box-shadow:none;
+    }
+    .hero::after{display:none;}
+    .hero .badge-top,.hero-pills span{border:1pt solid #000;background:#fff;color:#000;}
+    .hero .sub{color:#000;}
+    .toc,.up{display:none !important;}
+    .card,.report,.table-wrap,.summary,.flow,figure.lights{
+      box-shadow:none !important;
+      break-inside:avoid;
+      page-break-inside:avoid;
+    }
+    .card{margin-bottom:10pt;border:1pt solid #999;}
+    .summary{background:#fff !important;color:#000;border:1.5pt solid #000;}
+    .summary h3{color:#000;}
+    .note,.warning,.fine,.deadline,.ausn,.osno{
+      background:#fff !important;
+      border:1pt solid #000;
+      border-left:3pt solid #000;
+    }
+    .flow{border:1pt solid #000;background:#fff !important;}
+    .flow .node{background:#fff !important;border:1pt solid #000;}
+    table{min-width:0;font-size:8.8pt;}
+    thead{display:table-header-group;}
+    a{color:#000;border-bottom:0;text-decoration:none;}
+    h1,h2,h3{color:#000;}
+  }
+</style>
+</head>
+<body id="top">
+
+<div class="wrap">
+
+  <!-- ================= HERO ================= -->
+  <header class="hero">
+    <span class="badge-top">Актуально на 06.11.2026</span>
+    <h1>Разрешительные документы: виды и зачем они нужны участнику ВЭД</h1>
+    <p class="sub">Справка о том, какие документы подтверждают соблюдение запретов и ограничений, кто их выдаёт, что проверяет таможня и почему без них товар не выпустят.</p>
+    <div class="hero-pills">
+      <span>Без документа — нет выпуска</span>
+      <span>Графа 44 — не формальность</span>
+      <span>Разные документы — разная логика</span>
+    </div>
+  </header>
+
+  <!-- ================= TOC ================= -->
+  <nav class="toc" aria-label="Содержание">
+    <div class="toc-inner">
+      <a href="#princip">Главное</a>
+      <a href="#what">Что это</a>
+      <a href="#types">Виды</a>
+      <a href="#table">Таблица</a>
+      <a href="#grafa44">Графа 44</a>
+      <a href="#lk">Проверка в ЛК</a>
+      <a href="#risk">Последствия</a>
+      <a href="#errors">Ошибки</a>
+      <a href="#check">Чек-лист</a>
+      <a href="#gloss">Глоссарий</a>
+      <a href="#sources">Источники</a>
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- ================= 1 ================= -->
+    <section class="card" id="princip">
+      <span class="section-kicker">Сначала — главное</span>
+      <h2>О чём эта справка</h2>
+      <p class="lead">Разрешительный документ подтверждает, что товар можно ввезти или вывезти: он соответствует запретам и ограничениям, установленным правом ЕАЭС и законодательством РФ. Без действующего документа таможня не выпустит товар.</p>
+      <p>При декларировании сведения о таких документах указываются в графе 44 декларации на товары (ДТ). Если документ не указан или указан неверно, таможня может его «не увидеть» — даже если физически он у вас есть.</p>
+
+      <div class="legend">
+        <span><span class="tag tag-norm">Норма</span> закон, кодекс, решение ЕЭК</span>
+        <span><span class="tag tag-fts">Позиция ФТС</span> разъяснения и официальные страницы</span>
+        <span><span class="tag tag-prac">Практика</span> что происходит на деле</span>
+      </div>
+
+      <div class="osno">
+        <span class="box-title">Три условия, которые проверяют всегда</span>
+        Документ должен быть <strong>действительным на дату регистрации ДТ</strong>, относиться <strong>именно к этому товару и партии</strong> и быть <strong>доступным таможенному органу</strong> — в реестре, информационной системе или в виде электронного документа.
+      </div>
+    </section>
+
+    <!-- ================= 2 ================= -->
+    <section class="card" id="what">
+      <span class="section-kicker">Понятие</span>
+      <h2>Что такое разрешительные документы</h2>
+      <p class="lead">Термин используется в двух смыслах — узком и широком. Их полезно различать, чтобы не искать «не тот» документ.</p>
+
+      <h3>Узкий смысл</h3>
+      <p><span class="tag tag-norm">Норма</span> Лицензии и разрешения (заключения) в рамках <strong>мер нетарифного регулирования</strong>. Перечни товаров, для которых установлен разрешительный порядок, содержатся в Решении Коллегии ЕЭК от 21.04.2015 № 30 «О мерах нетарифного регулирования».</p>
+
+      <h3>Широкий смысл</h3>
+      <p>В практике графы 44 и сервисов личного кабинета к разрешительным относят также документы технического регулирования, санитарные и ветеринарные документы. Они подтверждают не «право ввоза» как таковое, а соответствие обязательным требованиям.</p>
+
+      <div class="note">
+        <strong>Зачем это участнику ВЭД.</strong> Разрешительные документы выполняют три разные задачи: (1) допускают товар к ввозу, (2) подтверждают его характеристики и безопасность, (3) дают основание для тарифных преференций. Третья задача — отдельная и к запретам не относится.
+      </div>
+
+      <div class="flow" role="img" aria-label="Схема: товар, запреты и ограничения, документ, графа 44, проверка ФТС, выпуск">
+        <div class="node"><b>Товар</b><span>код ТН ВЭД</span></div>
+        <div class="arrow" aria-hidden="true"></div>
+        <div class="node"><b>Проверка</b><span>попадает под запреты и ограничения?</span></div>
+        <div class="arrow" aria-hidden="true"></div>
+        <div class="node hi"><b>Документ</b><span>лицензия / разрешение / сертификат</span></div>
+        <div class="arrow" aria-hidden="true"></div>
+        <div class="node"><b>Графа 44</b><span>код и номер документа</span></div>
+        <div class="arrow" aria-hidden="true"></div>
+        <div class="node"><b>ФТС</b><span>проверка действительности</span></div>
+        <div class="arrow" aria-hidden="true"></div>
+        <div class="node hi"><b>Выпуск</b><span>или отказ</span></div>
+      </div>
+      <p class="flow-caption">Логика простая: сначала определяется, под какие меры попадает товар, затем оформляется нужный документ, затем он заявляется в графе 44.</p>
+    </section>
+
+    <!-- ================= 3 ================= -->
+    <section class="card" id="types">
+      <span class="section-kicker">Классификация</span>
+      <h2>Основные виды документов</h2>
+      <p class="lead">Ниже — группы, с которыми участник ВЭД сталкивается чаще всего. Внутри групп конкретный документ зависит от товара.</p>
+
+      <article class="report">
+        <div class="report-head">
+          <span class="num">1</span>
+          <div>
+            <h3>Лицензия на ввоз или вывоз товаров</h3>
+            <p class="sub">Мера нетарифного регулирования</p>
+          </div>
+        </div>
+        <div class="tags"><span class="tag tag-norm">Норма</span><span class="tag tag-prac">Практика</span></div>
+        <p><strong>По-человечески:</strong> официальное разрешение на ввоз или вывоз конкретного товара в определённом количестве. Выдаётся, когда товар включён в перечень товаров, в отношении которых установлен разрешительный порядок.</p>
+        <dl class="meta">
+          <div><dt>Кто выдаёт</dt><dd>Минпромторг России</dd></div>
+          <div><dt>Когда нужен</dt><dd>Товар входит в перечень Решения Коллегии ЕЭК № 30 и для него предусмотрено лицензирование</dd></div>
+          <div><dt>Что проверяет ФТС</dt><dd>Наличие, срок действия, соответствие товара и количества лицензии</dd></div>
+        </dl>
+      </article>
+
+      <article class="report">
+        <div class="report-head">
+          <span class="num">2</span>
+          <div>
+            <h3>Разрешение или заключение (разрешительный документ)</h3>
+            <p class="sub">Для отдельных категорий товаров</p>
+          </div>
+        </div>
+        <div class="tags"><span class="tag tag-norm">Норма</span><span class="tag tag-prac">Практика</span></div>
+        <p><strong>По-человечески:</strong> документ от профильного госоргана, который разрешает ввоз конкретной категории товаров. Он не универсальный: для лекарств, культурных ценностей, радиоэлектроники — свой орган и свой документ.</p>
+        <dl class="meta">
+          <div><dt>Кто выдаёт</dt><dd>Компетентный федеральный орган — зависит от товара <span class="flag">ТРЕБУЕТ ПРОВЕРКИ: перечень органов и видов заключений сверь по Решению № 30</span></dd></div>
+          <div><dt>Когда нужен</dt><dd>Товар включён в соответствующий перечень или подпадает под специальный порядок ввоза</dd></div>
+          <div><dt>Что проверяет ФТС</dt><dd>Наличие документа, его действительность и совпадение товара</dd></div>
+        </dl>
+      </article>
+
+      <article class="report">
+        <div class="report-head">
+          <span class="num green">3</span>
+          <div>
+            <h3>Сертификат соответствия</h3>
+            <p class="sub">Техническое регулирование</p>
+          </div>
+        </div>
+        <div class="tags"><span class="tag tag-norm">Норма</span><span class="tag tag-prac">Практика</span></div>
+        <p><strong>По-человечески:</strong> документ, который подтверждает, что товар соответствует требованиям технического регламента. Его оформляет орган по сертификации, а не сам импортёр.</p>
+        <dl class="meta">
+          <div><dt>Кто выдаёт</dt><dd>Аккредитованный орган по сертификации</dd></div>
+          <div><dt>Когда нужен</dt><dd>Продукция подпадает под технический регламент ЕАЭС или РФ, где предусмотрена сертификация</dd></div>
+          <div><dt>Что проверяет ФТС</dt><dd>Действительность документа и его область действия применительно к товару</dd></div>
+        </dl>
+      </article>
+
+      <article class="report">
+        <div class="report-head">
+          <span class="num green">4</span>
+          <div>
+            <h3>Декларация о соответствии</h3>
+            <p class="sub">Техническое регулирование, но оформляет сам</p>
+          </div>
+        </div>
+        <div class="tags"><span class="tag tag-norm">Норма</span><span class="tag tag-prac">Практика</span></div>
+        <p><strong>По-человечески:</strong> упрощённая форма подтверждения соответствия: импортёр сам принимает декларацию и регистрирует её. Но это не значит «без проверок» — декларация должна быть в реестре и относиться к вашему товару.</p>
+        <dl class="meta">
+          <div><dt>Кто оформляет</dt><dd>Декларант (импортёр) с регистрацией в реестре</dd></div>
+          <div><dt>Когда нужна</dt><dd>Для продукции, где техрегламентом предусмотрено декларирование, а не сертификация</dd></div>
+          <div><dt>Что проверяет ФТС</dt><dd>Наличие зарегистрированной декларации и её привязку к товару</dd></div>
+        </dl>
+      </article>
+
+      <article class="report">
+        <div class="report-head">
+          <span class="num">5</span>
+          <div>
+            <h3>Свидетельство о государственной регистрации (СГР)</h3>
+            <p class="sub">Санитарно-эпидемиологический контур</p>
+          </div>
+        </div>
+        <div class="tags"><span class="tag tag-norm">Норма</span><span class="tag tag-prac">Практика</span></div>
+        <p><strong>По-человечески:</strong> документ для отдельных видов продукции, которая проходит государственную регистрацию. Чаще всего встречается в пищевой и парфюмерно-косметической сфере.</p>
+        <dl class="meta">
+          <div><dt>Кто выдаёт</dt><dd>Роспотребнадзор</dd></div>
+          <div><dt>Когда нужен</dt><dd>Продукция включена в перечень товаров, подлежащих государственной регистрации</dd></div>
+          <div><dt>Что проверяет ФТС</dt><dd>Наличие СГР и соответствие товара зарегистрированным сведениям</dd></div>
+        </dl>
+      </article>
+
+      <article class="report">
+        <div class="report-head">
+          <span class="num amber">6</span>
+          <div>
+            <h3>Ветеринарный и фитосанитарный сертификаты</h3>
+            <p class="sub">Подконтрольные товары</p>
+          </div>
+        </div>
+        <div class="tags"><span class="tag tag-norm">Норма</span><span class="tag tag-prac">Практика</span></div>
+        <p><strong>По-человечески:</strong> для животных, мяса, кормов, растений и растительной продукции нужны документы, подтверждающие благополучие груза. Без них товар просто не пройдёт контроль.</p>
+        <dl class="meta">
+          <div><dt>Кто выдаёт</dt><dd>Компетентный орган страны-экспортёра; контроль — Россельхознадзор <span class="flag">ТРЕБУЕТ ПРОВЕРКИ: вид документа зависит от категории груза</span></dd></div>
+          <div><dt>Когда нужен</dt><dd>Товар входит в перечень подконтрольных товаров</dd></div>
+          <div><dt>Что проверяет ФТС</dt><dd>Наличие сертификата и соответствие партии</dd></div>
+        </dl>
+      </article>
+
+      <article class="report">
+        <div class="report-head">
+          <span class="num grey">7</span>
+          <div>
+            <h3>Документы экспортного контроля</h3>
+            <p class="sub">Двойное назначение и шифрование</p>
+          </div>
+        </div>
+        <div class="tags"><span class="tag tag-norm">Норма</span><span class="tag tag-prac">Практика</span></div>
+        <p><strong>По-человечески:</strong> если товар может быть использован для создания оружия или содержит средства шифрования, нужны заключения и разрешения профильных органов.</p>
+        <dl class="meta">
+          <div><dt>Кто выдаёт</dt><dd>ФСТЭК России, ФСБ России; по отдельным товарам — иные уполномоченные органы</dd></div>
+          <div><dt>Когда нужен</dt><dd>Товар включён в контрольные списки либо содержит шифровальные (криптографические) средства</dd></div>
+          <div><dt>Что проверяет ФТС</dt><dd>Наличие заключения, разрешения или нотификации</dd></div>
+        </dl>
+      </article>
+
+      <article class="report">
+        <div class="report-head">
+          <span class="num grey">8</span>
+          <div>
+            <h3>Сертификат происхождения</h3>
+            <p class="sub">Особый случай: не про запреты</p>
+          </div>
+        </div>
+        <div class="tags"><span class="tag tag-prac">Не мера нетарифного регулирования</span></div>
+        <p><strong>По-человечески:</strong> этот документ не разрешает ввоз — он подтверждает страну происхождения товара и даёт право на тарифные преференции. Но в графе 44 он тоже указывается, поэтому его часто путают с разрешительными.</p>
+        <dl class="meta">
+          <div><dt>Кто выдаёт</dt><dd>Торгово-промышленная палата или уполномоченный орган страны экспорта</dd></div>
+          <div><dt>Когда нужен</dt><dd>Для применения преференций по соглашениям о свободной торговле</dd></div>
+          <div><dt>Что проверяет ФТС</dt><dd>Подлинность, форму и соблюдение правил происхождения</dd></div>
+        </dl>
+      </article>
+
+      <div class="warning">
+        <strong>Отказное письмо — не универсальная замена.</strong> В ряде случаев вместо сертификата или декларации представляют письмо об отсутствии необходимости такого документа. Но оно принимается не всегда и не по всем товарам: всё зависит от конкретного техрегламента и категории продукции. <span class="flag">ТРЕБУЕТ ПРОВЕРКИ: по каждому товару отдельно</span>
+      </div>
+    </section>
+
+    <!-- ================= 4 ================= -->
+    <section class="card" id="table">
+      <span class="section-kicker">Сводная таблица</span>
+      <h2>Кто выдаёт и что проверяет ФТС</h2>
+
+      <div class="table-wrap">
+        <table>
+          <caption>Ориентир по видам документов. Конкретный документ определяется товаром и его кодом ТН ВЭД.</caption>
+          <thead>
+            <tr>
+              <th>Документ</th>
+              <th>Кто выдаёт / оформляет</th>
+              <th>Когда нужен</th>
+              <th>Что проверяет ФТС</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Лицензия</strong></td>
+              <td>Минпромторг России</td>
+              <td>Товар в перечне Решения № 30</td>
+              <td>Наличие, срок, товар, количество</td>
+            </tr>
+            <tr>
+              <td><strong>Разрешение / заключение</strong></td>
+              <td>Профильный госорган</td>
+              <td>Специальный порядок ввоза для категории товаров</td>
+              <td>Наличие и соответствие товару</td>
+            </tr>
+            <tr>
+              <td><strong>Сертификат соответствия</strong></td>
+              <td>Орган по сертификации</td>
+              <td>Продукция под ТР ЕАЭС / ТР РФ</td>
+              <td>Действительность и область действия</td>
+            </tr>
+            <tr>
+              <td><strong>Декларация о соответствии</strong></td>
+              <td>Импортёр с регистрацией в реестре</td>
+              <td>Техрегламент предусматривает декларирование</td>
+              <td>Регистрация и привязка к товару</td>
+            </tr>
+            <tr>
+              <td><strong>СГР</strong></td>
+              <td>Роспотребнадзор</td>
+              <td>Товар подлежит госрегистрации</td>
+              <td>Наличие и соответствие сведений</td>
+            </tr>
+            <tr>
+              <td><strong>Ветеринарный / фитосанитарный сертификат</strong></td>
+              <td>Компетентный орган страны экспорта</td>
+              <td>Подконтрольный товар</td>
+              <td>Наличие и соответствие партии</td>
+            </tr>
+            <tr>
+              <td><strong>Заключение / нотификация</strong></td>
+              <td>ФСТЭК, ФСБ</td>
+              <td>Двойное назначение, шифрование</td>
+              <td>Наличие документа</td>
+            </tr>
+            <tr>
+              <td><strong>Сертификат происхождения</strong></td>
+              <td>ТПП / уполномоченный орган</td>
+              <td>Для преференций</td>
+              <td>Подлинность и правила происхождения</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ================= 5 ================= -->
+    <section class="card" id="grafa44">
+      <span class="section-kicker">Декларирование</span>
+      <h2>Графа 44: как документ попадает к таможне</h2>
+      <p class="lead">Наличие документа — половина дела. Вторая половина — правильно заявить его в декларации.</p>
+
+      <p><span class="tag tag-norm">Норма</span> В графе 44 ДТ указываются сведения о документах, на основании которых заполнена декларация и которые подтверждают заявленные сведения о товаре. Для каждого документа указывается код по классификатору видов документов и сведений, затем его номер и дата.</p>
+
+      <div class="deadline">
+        <span class="box-title">Что должно совпасть</span>
+        Вид документа (код по классификатору) · номер · дата · товар и партия · срок действия на дату регистрации ДТ
+      </div>
+
+      <h3>Типичные провалы именно на этом шаге</h3>
+      <ul>
+        <li>Документ есть, но в графе 44 не указан — таможня его не увидит.</li>
+        <li>Указан неверный код вида документа, и система ищет не тот реестр.</li>
+        <li>Указан документ на другую партию или другого производителя.</li>
+        <li>Документ истёк к моменту регистрации ДТ.</li>
+        <li>В графе стоит номер заявки, а не номер самого документа.</li>
+      </ul>
+
+      <div class="note">
+        <span class="tag tag-fts">Позиция ФТС</span> ФТС отдельно выпускала рекомендации по заполнению графы 44 в части сведений о разрешительных документах — именно потому, что ошибки здесь массовые и приводят к отказам в выпуске.
+      </div>
+    </section>
+
+    <!-- ================= 6 ================= -->
+    <section class="card" id="lk">
+      <span class="section-kicker">Проверка</span>
+      <h2>Сервис «Разрешительные документы» в личном кабинете</h2>
+      <p class="lead">В ЛК участника ВЭД есть отдельный сервис, который позволяет проверить документ по базе таможенных органов до подачи декларации или после отказа.</p>
+
+      <p><strong>Что можно сделать:</strong> посмотреть свои документы, отправить запрос по виду документа (код по классификатору) и номеру по маске, проверить остатки квот по лицензии и сформировать справку об исполнении лицензии.</p>
+
+      <figure class="lights">
+        <figcaption>Цветовая маркировка документа в сервисе</figcaption>
+        <div class="lights-grid">
+          <div class="light red">
+            <span class="dot"></span>
+            <b>Красный</b>
+            <p>Документ не найден в базе таможенных органов. Проверьте вид, номер, маску и дату.</p>
+          </div>
+          <div class="light yellow">
+            <span class="dot"></span>
+            <b>Жёлтый</b>
+            <p>Документ в базе есть, но при декларировании ещё не использован.</p>
+          </div>
+          <div class="light green">
+            <span class="dot"></span>
+            <b>Зелёный</b>
+            <p>Документ найден и уже использован при таможенном декларировании.</p>
+          </div>
+        </div>
+      </figure>
+
+      <div class="ausn">
+        <span class="box-title">Зачем проверять заранее</span>
+        Красный статус до подачи ДТ — это шанс исправить ситуацию без отказа в выпуске и без простоя товара на складе.
+      </div>
+
+      <div class="osno">
+        <span class="box-title">Чего сервис не делает</span>
+        Он не оформляет документы и не заменяет официальное подтверждение. Отсутствие записи в ЛК не всегда означает, что документ недействителен — возможна задержка или ошибка в реквизитах.
+      </div>
+    </section>
+
+    <!-- ================= 7 ================= -->
+    <section class="card" id="risk">
+      <span class="section-kicker">Последствия</span>
+      <h2>Что будет, если документа нет или он неверный</h2>
+      <p class="lead">Риск не сводится к одному штрафу: последствия идут по цепочке.</p>
+
+      <div class="fine">
+        <span class="box-title">1 · Отказ в выпуске</span>
+        Товар остаётся на складе временного хранения, растут расходы на хранение и логистику, срываются сроки поставки. Это самый частый и самый дорогой по времени сценарий.
+      </div>
+
+      <div class="fine">
+        <span class="box-title">2 · Статья 16.3 КоАП РФ</span>
+        Несоблюдение запретов и ограничений на ввоз товаров. Состав возникает, когда товар ввезён без необходимого документа или с нарушением установленного порядка.
+      </div>
+
+      <div class="fine">
+        <span class="box-title">3 · Часть 3 статьи 16.2 КоАП РФ</span>
+        Недостоверные сведения о товарах в декларации, если это послужило основанием для несоблюдения запретов и ограничений. Здесь речь уже про качество декларирования, а не только про наличие бумаги.
+      </div>
+
+      <div class="warning">
+        <span class="box-title">4 · Профильная ответственность</span>
+        Отдельно возможны нарушения требований технических регламентов и санитарных правил — это самостоятельные составы, не связанные с таможенным оформлением. Один и тот же факт может «раздвоиться» на два производства.
+      </div>
+
+      <div class="note">
+        <span class="box-title">5 · Практический эффект</span>
+        Участник с историей отказов и корректировок попадает в зону повышенного внимания: больше досмотров, больше запросов документов, дольше выпуск.
+      </div>
+    </section>
+
+    <!-- ================= 8 ================= -->
+    <section class="card" id="errors">
+      <span class="section-kicker">Типичные ошибки</span>
+      <h2>Частые ошибки</h2>
+      <ul>
+        <li>Считать, что любой сертификат — это разрешение на ввоз. Это разные вещи с разными последствиями.</li>
+        <li>Оформлять документ «на компанию», а не на конкретный товар и партию.</li>
+        <li>Проверять срок действия на дату подачи, а не на дату регистрации ДТ.</li>
+        <li>Указывать в графе 44 документ, которого нет в реестре или в системе ФТС.</li>
+        <li>Путать номер документа с номером заявки или номером записи в реестре.</li>
+        <li>Считать, что документ поставщика автоматически годится для российской таможни.</li>
+        <li>Полагаться на отказное письмо там, где нужен сертификат или декларация.</li>
+        <li>Не проверять документ в ЛК до подачи декларации.</li>
+      </ul>
+    </section>
+
+    <!-- ================= 9 ================= -->
+    <section class="card" id="check">
+      <span class="section-kicker">Практический инструмент</span>
+      <h2>Чек-лист перед декларированием</h2>
+      <ul class="checklist">
+        <li>Я определил код ТН ВЭД и проверил, попадает ли товар под запреты и ограничения?</li>
+        <li>Я понимаю, какой именно документ нужен: лицензия, разрешение, сертификат, декларация или СГР?</li>
+        <li>Я знаю, кто его выдаёт и сколько времени это занимает?</li>
+        <li>Документ действует на дату регистрации ДТ?</li>
+        <li>Документ относится именно к этому товару, производителю и партии?</li>
+        <li>Документ есть в реестре или информационной системе таможенных органов?</li>
+        <li>Я указал в графе 44 правильный код вида документа, номер и дату?</li>
+        <li>Я проверил документ в ЛК «Разрешительные документы» до подачи?</li>
+      </ul>
+    </section>
+
+    <!-- ================= 10 ================= -->
+    <section class="card" id="gloss">
+      <span class="section-kicker">Словарь</span>
+      <h2>Глоссарий</h2>
+      <dl class="glossary">
+        <div><dt>Разрешительный документ</dt><dd>общее название документов, подтверждающих соблюдение запретов и ограничений.</dd></div>
+        <div><dt>Запреты и ограничения</dt><dd>меры, ограничивающие ввоз или вывоз товаров (ст. 7 ТК ЕАЭС).</dd></div>
+        <div><dt>Меры нетарифного регулирования</dt><dd>лицензирование, квотирование и иные ограничения внешней торговли.</dd></div>
+        <div><dt>Лицензия</dt><dd>разрешение на ввоз или вывоз товара в установленном количестве.</dd></div>
+        <div><dt>Разрешение / заключение</dt><dd>документ профильного органа для отдельных категорий товаров.</dd></div>
+        <div><dt>ТР ЕАЭС</dt><dd>технический регламент Евразийского экономического союза.</dd></div>
+        <div><dt>Сертификат соответствия</dt><dd>документ органа по сертификации о соответствии товара требованиям.</dd></div>
+        <div><dt>Декларация о соответствии</dt><dd>подтверждение соответствия, которое принимает сам импортёр.</dd></div>
+        <div><dt>СГР</dt><dd>свидетельство о государственной регистрации продукции.</dd></div>
+        <div><dt>Графа 44 ДТ</dt><dd>раздел декларации со сведениями о представленных документах.</dd></div>
+        <div><dt>Реестр</dt><dd>информационная система, в которой проверяется наличие и действительность документа.</dd></div>
+        <div><dt>Отказное письмо</dt><dd>документ об отсутствии необходимости обязательного подтверждения соответствия.</dd></div>
+      </dl>
+    </section>
+
+    <!-- ================= 11 ================= -->
+    <section class="card" id="summary">
+      <span class="section-kicker">Итог</span>
+      <h2>Резюме</h2>
+      <div class="summary">
+        <h3>Шесть тезисов для быстрого чтения</h3>
+        <ol>
+          <li>Разрешительные документы подтверждают соблюдение запретов и ограничений — без них товар не выпустят.</li>
+          <li>Видов документов несколько, и они не взаимозаменяемы: лицензия, разрешение, сертификат, декларация, СГР, ветеринарные и фитосанитарные документы.</li>
+          <li>Сертификат происхождения — не мера нетарифного регулирования, а основание для преференций.</li>
+          <li>Документ должен действовать на дату регистрации ДТ и относиться именно к этому товару.</li>
+          <li>Сведения о документе заявляются в графе 44 с кодом по классификатору.</li>
+          <li>Проверить документ заранее можно в ЛК «Разрешительные документы»: красный статус — повод исправить до подачи.</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ================= 12 ================= -->
+    <section class="card sources" id="sources">
+      <span class="section-kicker">Первоисточники</span>
+      <h2>Источники</h2>
+
+      <article class="source">
+        <h3>Таможенный кодекс ЕАЭС</h3>
+        <p class="req">Приложение к Договору о ТК ЕАЭС от 11.04.2017. Статья 7 «Соблюдение запретов и ограничений»; статья 106 (сведения в декларации).</p>
+        <p><strong>Что подтверждает:</strong> обязанность перемещать товары с соблюдением запретов и ограничений и состав сведений, заявляемых в ДТ. <span class="tag tag-norm">Норма</span></p>
+        <p class="link"><a href="https://www.consultant.ru/document/cons_doc_LAW_215315/b8c1dd925c54d11d2bca71bcd4b24c973f1a09be/">consultant.ru — ст. 7</a> · <a href="https://eec.eaeunion.org/comission/department/dep_tamoj_zak/tk_eaes.php">eec.eaeunion.org</a></p>
+      </article>
+
+      <article class="source">
+        <h3>Решение Коллегии ЕЭК от 21.04.2015 № 30 «О мерах нетарифного регулирования»</h3>
+        <p class="req">Устанавливает перечни товаров, в отношении которых действует разрешительный порядок ввоза и (или) вывоза.</p>
+        <p><strong>Что подтверждает:</strong> какие товары подпадают под лицензирование и разрешительный порядок, а также виды разрешительных документов. <span class="tag tag-norm">Норма</span></p>
+        <p class="link"><a href="https://www.consultant.ru/document/cons_doc_LAW_178556/">consultant.ru</a> · <a href="https://docs.eaeunion.org/documents/292/1553/">docs.eaeunion.org</a></p>
+      </article>
+
+      <article class="source">
+        <h3>Решение Комиссии Таможенного союза от 20.09.2010 № 378</h3>
+        <p class="req">«О классификаторах, используемых для заполнения таможенных деклараций». Классификатор видов документов и сведений.</p>
+        <p><strong>Что подтверждает:</strong> коды видов документов, которые указываются в графе 44 ДТ. <span class="tag tag-norm">Норма</span></p>
+        <p class="link"><a href="https://www.consultant.ru/document/cons_doc_LAW_105110/">consultant.ru</a> · <a href="https://www.alta.ru/tamdoc/10sr0378/">alta.ru</a></p>
+      </article>
+
+      <article class="source">
+        <h3>Федеральный закон от 27.12.2002 № 184-ФЗ «О техническом регулировании»</h3>
+        <p class="req">Общие правила подтверждения соответствия: сертификация и декларирование.</p>
+        <p><strong>Что подтверждает:</strong> правовую природу сертификата соответствия и декларации о соответствии. <span class="tag tag-norm">Норма</span></p>
+        <p class="link"><a href="https://www.consultant.ru/document/cons_doc_LAW_40241/">consultant.ru</a></p>
+      </article>
+
+      <article class="source">
+        <h3>Федеральный закон от 08.12.2003 № 164-ФЗ «Об основах государственного регулирования внешнеторговой деятельности»</h3>
+        <p class="req">Общие положения о запретах и ограничениях внешней торговли, лицензировании.</p>
+        <p><strong>Что подтверждает:</strong> правовую основу установления запретов и ограничений и лицензирования внешнеторговых операций. <span class="tag tag-norm">Норма</span></p>
+        <p class="link"><a href="https://www.consultant.ru/document/cons_doc_LAW_45397/">consultant.ru</a></p>
+      </article>
+
+      <article class="source">
+        <h3>КоАП РФ: статья 16.3 и часть 3 статьи 16.2</h3>
+        <p class="req">Несоблюдение запретов и ограничений на ввоз; недостоверные сведения, повлекшие несоблюдение запретов и ограничений.</p>
+        <p><strong>Что подтверждает:</strong> виды ответственности за ввоз без разрешительных документов и за недостоверное декларирование. <span class="tag tag-norm">Норма</span></p>
+        <p class="link"><a href="https://www.consultant.ru/document/cons_doc_LAW_34661/7caa4677f9e8336d3c481ad2cc12e2ee3806e9ce/">consultant.ru — ст. 16.3</a></p>
+      </article>
+
+      <article class="source">
+        <h3>Рекомендации ФТС по заполнению графы 44 ДТ</h3>
+        <p class="req">Разъяснения в части сведений о разрешительных документах и неформализованных документах.</p>
+        <p><strong>Что подтверждает:</strong> практические требования к указанию реквизитов документов и типичные ошибки. <span class="tag tag-fts">Позиция ФТС</span></p>
+        <p class="link"><a href="https://www.consultant.ru/document/cons_doc_LAW_336684/">consultant.ru</a> · <a href="https://customs.gov.ru/folder/247365">customs.gov.ru</a></p>
+      </article>
+
+      <article class="source">
+        <h3>Сервис «Разрешительные документы» в ЛК участника ВЭД</h3>
+        <p class="req">Информационный сервис ФТС: проверка документов, квот и лицензий.</p>
+        <p><strong>Что подтверждает:</strong> возможность проверить документ по базе таможенных органов и цветовую маркировку статусов. <span class="tag tag-fts">Позиция ФТС</span></p>
+        <p class="link"><a href="https://customs.gov.ru/uchastnikam-ved/zaprety-i-ogranicheniya/informaczionnyj-servis-razreshitel-nie-dokumenty-iz-sostava-lichnogo-kabineta-uchastnika-vneshneekonomicheskoj-deyatel-nosti">customs.gov.ru</a> · <a href="https://edata.customs.ru/FtsPersonalCabinetWeb/">edata.customs.ru</a></p>
+      </article>
+
+      <div class="actual">
+        <strong>Информация актуальна на 06.11.2026.</strong> Перечни товаров и требования к документам меняются: перед применением сверь действующую редакцию Решения № 30, профильные технические регламенты и наличие более поздних разъяснений ФТС.
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    Справка подготовлена для личного использования участником ВЭД. Не является юридической консультацией. Конкретный перечень документов определяется товаром, его кодом ТН ВЭД и действующими перечнями.
+  </footer>
+
+</div>
+
+<a class="up" href="#top" aria-label="Наверх">↑</a>
+
+<style>
+.nav-back { position: fixed; bottom: 24px; right: 24px; background: #0d3b66; color: #fff !important; padding: 10px 16px; border-radius: 8px; text-decoration: none; font-family: "Segoe UI", Arial, sans-serif; font-size: 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 9999; transition: background 0.2s; font-weight: 600; }
+.nav-back:hover { background: #1e5a99; }
+</style>
+<a href="index.html" class="nav-back">← Назад в меню</a>
+</body>
+</html>

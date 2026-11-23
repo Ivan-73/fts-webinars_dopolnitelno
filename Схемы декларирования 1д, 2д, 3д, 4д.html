@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Схемы декларирования 1д, 2д, 3д, 4д — памятка импортёра</title>
+<style>
+  :root{
+    --bg:#eef3f9;
+    --card:#ffffff;
+    --ink:#12263f;
+    --muted:#5b7189;
+    --blue:#1d4ed8;
+    --blue-dark:#0f2d52;
+    --sky:#0ea5e9;
+    --line:#d7e3f1;
+    --green:#0f766e;
+    --amber:#b45309;
+    --red:#b91c1c;
+    --radius:16px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    line-height:1.62;
+    font-size:16px;
+  }
+  .container{max-width:1080px;margin:0 auto;padding:0 18px}
+
+  /* HERO */
+  .hero{
+    background:linear-gradient(135deg,#0f2d52 0%,#1d4ed8 62%,#0ea5e9 100%);
+    color:#fff;
+    padding:38px 0 34px;
+    border-radius:0 0 26px 26px;
+  }
+  .hero .badge{
+    display:inline-block;
+    background:rgba(255,255,255,.16);
+    border:1px solid rgba(255,255,255,.35);
+    color:#fff;
+    font-size:12.5px;
+    font-weight:700;
+    letter-spacing:.05em;
+    text-transform:uppercase;
+    padding:5px 12px;
+    border-radius:999px;
+    margin-bottom:16px;
+  }
+  .hero h1{
+    font-size:clamp(24px,3.4vw,38px);
+    line-height:1.2;
+    margin:0 0 12px;
+    letter-spacing:-.01em;
+  }
+  .hero .sub{
+    font-size:clamp(15px,1.6vw,18px);
+    color:#dbeafe;
+    max-width:840px;
+    margin:0 0 20px;
+  }
+  .pills{display:flex;flex-wrap:wrap;gap:10px}
+  .pill{
+    background:rgba(255,255,255,.13);
+    border:1px solid rgba(255,255,255,.28);
+    border-radius:12px;
+    padding:8px 14px;
+    font-size:13.5px;
+    font-weight:600;
+  }
+
+  /* TOC */
+  .toc{
+    position:sticky;
+    top:0;
+    z-index:30;
+    background:rgba(255,255,255,.94);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+    box-shadow:0 4px 16px rgba(15,45,82,.06);
+  }
+  .toc ul{
+    list-style:none;
+    margin:0;
+    padding:8px 0;
+    display:flex;
+    flex-wrap:wrap;
+    gap:4px 6px;
+    font-size:13px;
+  }
+  .toc a{
+    display:inline-block;
+    padding:5px 9px;
+    border-radius:8px;
+    color:#264b78;
+    text-decoration:none;
+    font-weight:600;
+    white-space:nowrap;
+  }
+  .toc a:hover{background:#eaf2fd;color:var(--blue)}
+
+  /* CARDS */
+  main{padding-bottom:10px}
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:26px 28px;
+    margin:20px 0;
+    box-shadow:0 8px 24px rgba(15,45,82,.06);
+    scroll-margin-top:70px;
+  }
+  .section-kicker{
+    font-size:11.5px;
+    font-weight:800;
+    letter-spacing:.09em;
+    text-transform:uppercase;
+    color:var(--blue);
+    margin-bottom:6px;
+  }
+  .card h2{
+    font-size:clamp(21px,2.3vw,27px);
+    line-height:1.25;
+    margin:0 0 10px;
+    letter-spacing:-.01em;
+  }
+  .card h3{font-size:18.5px;margin:22px 0 8px}
+  .lead{color:var(--muted);font-size:16.5px;margin:0 0 14px}
+  p{margin:10px 0}
+  ul,ol{margin:10px 0;padding-left:22px}
+  li{margin:6px 0}
+  strong{color:#0d2340}
+  a{color:var(--blue)}
+  .small{font-size:13.5px;color:var(--muted)}
+
+  /* GRIDS */
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .mini{
+    background:#f7fbff;
+    border:1px solid var(--line);
+    border-radius:13px;
+    padding:14px 16px;
+  }
+  .mini h4{margin:0 0 6px;font-size:15.5px;color:#12395f}
+  .mini .tag{margin-bottom:8px}
+
+  /* TAGS */
+  .tag{
+    display:inline-block;
+    font-size:11px;
+    font-weight:800;
+    letter-spacing:.05em;
+    text-transform:uppercase;
+    padding:3px 9px;
+    border-radius:999px;
+    margin:0 6px 6px 0;
+    vertical-align:middle;
+  }
+  .t-norm{background:#e0ecff;color:#1e40af}
+  .t-fts{background:#e6f7f4;color:#0f766e}
+  .t-prac{background:#f1f5f9;color:#475569}
+  .t-check{background:#fef3c7;color:#92400e}
+  .legend{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:8px 0 0}
+
+  /* BOXES */
+  .box{border-radius:14px;padding:16px 18px;margin:16px 0}
+  .deadline{background:#eff6ff;border:1px solid #bfdbfe;border-left:5px solid #2563eb}
+  .fine{background:#fff7ed;border:1px solid #fed7aa;border-left:5px solid #ea580c}
+  .ausn{background:#ecfdf5;border:1px solid #a7f3d0;border-left:5px solid #059669}
+  .osno{background:#fef2f2;border:1px solid #fecaca;border-left:5px solid #dc2626}
+  .note{background:#f8fafc;border:1px solid #e2e8f0;border-left:5px solid #64748b}
+  .warning{background:#fffbeb;border:1px solid #fde68a;border-left:5px solid #d97706}
+  .summary{
+    background:linear-gradient(135deg,#0f2d52,#1e40af);
+    color:#fff;
+    border:none;
+  }
+  .summary h2{color:#fff}
+  .summary strong{color:#fff}
+  .summary ol{padding-left:22px}
+  .summary li{margin:9px 0;color:#e8f0fb}
+  .box h3,.box h4{margin-top:0}
+
+  /* STEPS */
+  .report{
+    display:grid;
+    grid-template-columns:46px 1fr;
+    gap:14px;
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:16px 18px;
+    margin:14px 0;
+    background:#fbfdff;
+    scroll-margin-top:70px;
+  }
+  .num{
+    width:46px;height:46px;
+    border-radius:12px;
+    background:linear-gradient(135deg,#1d4ed8,#0ea5e9);
+    color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-weight:800;font-size:20px;
+  }
+  .report h3{margin:0 0 6px;font-size:18px}
+  .human{margin:6px 0}
+  .exact{
+    font-size:14.5px;
+    color:#334e68;
+    background:#f7fafd;
+    border-left:3px solid #93c5fd;
+    padding:8px 12px;
+    border-radius:0 8px 8px 0;
+    margin:8px 0;
+  }
+  .meta{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:10px;
+    margin-top:12px;
+  }
+  .meta div{
+    background:#f2f7fd;
+    border-radius:10px;
+    padding:8px 10px;
+    font-size:13.5px;
+  }
+  .meta b{display:block;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#5b7189;margin-bottom:2px}
+
+  /* FLOW */
+  .flow{
+    display:flex;
+    align-items:stretch;
+    gap:8px;
+    flex-wrap:wrap;
+    margin:18px 0 6px;
+  }
+  .flow .node{
+    flex:1 1 140px;
+    min-width:132px;
+    background:#f2f7fd;
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:13px 10px;
+    text-align:center;
+    font-size:13.5px;
+  }
+  .flow .node b{display:block;color:#12395f;margin-bottom:4px;font-size:14px}
+  .flow .arrow{
+    align-self:center;
+    color:var(--blue);
+    font-weight:800;
+    font-size:20px;
+    padding:0 2px;
+  }
+
+  /* LIGHTS */
+  .lights{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:16px 0}
+  .light{border-radius:14px;padding:14px;border:1px solid;font-size:14px}
+  .light b{display:block;margin-bottom:4px}
+  .l-green{background:#ecfdf5;border-color:#6ee7b7}
+  .l-yellow{background:#fffbeb;border-color:#fcd34d}
+  .l-red{background:#fef2f2;border-color:#fca5a5}
+
+  /* TABLE */
+  .table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:14px 0}
+  table{width:100%;border-collapse:collapse;font-size:14.5px;min-width:760px}
+  th{
+    background:var(--blue-dark);
+    color:#fff;
+    text-align:left;
+    padding:10px 12px;
+    font-size:13px;
+    letter-spacing:.03em;
+    text-transform:uppercase;
+  }
+  td{padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  tbody tr:nth-child(even) td{background:#f8fbff}
+  .yes{color:var(--green);font-weight:700}
+  .no{color:var(--red);font-weight:700}
+
+  /* TIMELINE */
+  .timeline{list-style:none;margin:16px 0;padding:0;position:relative}
+  .timeline li{
+    position:relative;
+    padding:0 0 18px 30px;
+    border-left:2px solid #c7dbf3;
+    margin-left:8px;
+  }
+  .timeline li:last-child{border-left:2px solid transparent;padding-bottom:0}
+  .timeline li::before{
+    content:"";
+    position:absolute;
+    left:-8px;top:4px;
+    width:14px;height:14px;
+    border-radius:50%;
+    background:var(--blue);
+    box-shadow:0 0 0 4px #e6effb;
+  }
+  .timeline b{display:block;color:#12395f}
+
+  /* CORRECTIONS */
+  .corr{
+    background:#f5f3ff;
+    border:1px solid #ddd6fe;
+    border-left:5px solid #7c3aed;
+    border-radius:14px;
+    padding:16px 18px;
+    margin:16px 0;
+  }
+  .corr h3{margin-top:0;color:#5b21b6}
+  .corr .row{display:grid;grid-template-columns:110px 1fr;gap:10px;padding:8px 0;border-bottom:1px dashed #ddd6fe}
+  .corr .row:last-child{border-bottom:none}
+  .corr .row span:first-child{font-size:11.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#6d28d9}
+
+  /* SOURCES */
+  .sources{font-size:14.5px}
+  .sources ol{padding-left:22px}
+  .sources li{margin:12px 0}
+  .sources .what{display:block;color:var(--muted);font-size:13.5px}
+
+  /* FOOTER + UP */
+  footer{
+    padding:24px 0 46px;
+    color:var(--muted);
+    font-size:13.5px;
+    text-align:center;
+  }
+  .up{
+    position:fixed;
+    right:18px;bottom:18px;
+    width:46px;height:46px;
+    border-radius:50%;
+    background:var(--blue);
+    color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    text-decoration:none;
+    font-size:20px;
+    box-shadow:0 8px 20px rgba(29,78,216,.35);
+    z-index:40;
+  }
+  .up:hover{background:#1e40af}
+
+  /* RESPONSIVE */
+  @media (max-width:800px){
+    .card{padding:20px 18px;border-radius:14px}
+    .grid2,.grid3,.meta,.lights{grid-template-columns:1fr}
+    .flow{flex-direction:column}
+    .flow .arrow{transform:rotate(90deg);padding:2px 0}
+    .report{grid-template-columns:1fr}
+    .num{width:40px;height:40px;font-size:18px;border-radius:10px}
+    .corr .row{grid-template-columns:1fr}
+    .toc ul{flex-wrap:nowrap;overflow-x:auto;padding-bottom:6px}
+    table{min-width:680px}
+  }
+
+  /* PRINT */
+  @page{margin:12mm}
+  @media print{
+    body{background:#fff;color:#000;font-size:11pt}
+    .toc,.up{display:none!important}
+    .hero{
+      background:#fff!important;
+      color:#000!important;
+      border:1px solid #000;
+      border-radius:0;
+      padding:0 0 12px;
+    }
+    .hero .sub{color:#000}
+    .hero .badge,.pill{background:#fff!important;color:#000!important;border:1px solid #000}
+    .card,.report,.box,.mini,.light,.corr{
+      box-shadow:none!important;
+      border:1px solid #999;
+      break-inside:avoid;
+      page-break-inside:avoid;
+    }
+    .summary{background:#fff!important;color:#000!important;border:1px solid #000}
+    .summary h2,.summary strong,.summary li{color:#000!important}
+    .card h2,.card h3{break-after:avoid;page-break-after:avoid}
+    table,.flow,.timeline,.lights{break-inside:avoid;page-break-inside:avoid}
+    .table-wrap{overflow:visible}
+    th{background:#fff!important;color:#000!important;border:1px solid #000}
+    td{border:1px solid #999}
+    a{color:#000;text-decoration:none}
+  }
+</style>
+</head>
+<body id="top">
+
+<!-- ================= HERO ================= -->
+<header class="hero">
+  <div class="container">
+    <div class="badge">Актуально на 12 ноября 2026 г.</div>
+    <h1>Схемы декларирования 1д, 2д, 3д, 4д</h1>
+    <p class="sub">Серия или партия, своя лаборатория или аккредитованная, кто может быть заявителем — и какую схему выбрать импортёру, который везёт товар из Китая через трейдера.</p>
+    <div class="pills">
+      <div class="pill">1д–4д: четыре разные логики</div>
+      <div class="pill">Серия — долго, партия — быстро</div>
+      <div class="pill">Заявитель решает всё</div>
+    </div>
+  </div>
+</header>
+
+<!-- ================= TOC ================= -->
+<nav class="toc" aria-label="Навигация по памятке">
+  <div class="container">
+    <ul>
+      <li><a href="#about">Что это</a></li>
+      <li><a href="#schemes">Схемы</a></li>
+      <li><a href="#table">Таблица</a></li>
+      <li><a href="#applicant">Заявитель</a></li>
+      <li><a href="#flow">Схема выбора</a></li>
+      <li><a href="#status">Светофор</a></li>
+      <li><a href="#limits">Ограничения</a></li>
+      <li><a href="#choose">Что проверить</a></li>
+      <li><a href="#examples">Примеры</a></li>
+      <li><a href="#mistakes">Ошибки</a></li>
+      <li><a href="#timeline">Хронология</a></li>
+      <li><a href="#corr">Исправления</a></li>
+      <li><a href="#glossary">Глоссарий</a></li>
+      <li><a href="#summary">Резюме</a></li>
+      <li><a href="#sources">Источники</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main class="container">
+
+  <!-- ================= 1. ABOUT ================= -->
+  <section class="card" id="about">
+    <div class="section-kicker">01 · Суть</div>
+    <h2>Что такое серия и партия и при чём тут лаборатория</h2>
+    <p class="lead">Схема декларирования — это набор действий, которыми вы доказываете соответствие. Отличаются они тремя параметрами: серия или партия, своя лаборатория или аккредитованная, есть ли производственный контроль.</p>
+
+    <div class="grid2">
+      <div class="mini">
+        <h4>Серия</h4>
+        <span class="tag t-norm">норма</span>
+        <p class="small">Продукция выпускается серийно по одной и той же документации, и декларация действует на весь выпуск в течение срока её действия. Пример: партия одинаковых чайников одной модели, которая будет производиться и поставляться годами.</p>
+      </div>
+      <div class="mini">
+        <h4>Партия</h4>
+        <span class="tag t-norm">норма</span>
+        <p class="small">Декларация оформляется на конкретную партию — количество товара, поставленное по одному документу. Пример: один контейнер конкретных артикулов, после продажи которого декларация «заканчивается».</p>
+      </div>
+    </div>
+
+    <div class="grid3">
+      <div class="mini">
+        <h4>Своя лаборатория</h4>
+        <p class="small">Испытания проводит лаборатория изготовителя. Это возможно не во всех техрегламентах и не для любой продукции.</p>
+      </div>
+      <div class="mini">
+        <h4>Аккредитованная лаборатория</h4>
+        <p class="small">Испытания проводит независимая лаборатория, аккредитованная в установленном порядке. Результат оформляется протоколом.</p>
+      </div>
+      <div class="mini">
+        <h4>Производственный контроль</h4>
+        <p class="small">Изготовитель регулярно проверяет, что серийная продукция продолжает соответствовать требованиям. Для партии не проводится.</p>
+      </div>
+    </div>
+
+    <div class="note">
+      <strong>«Сам себе эксперт» — это бытовое выражение.</strong> Юридически речь о декларировании на основании собственных доказательств заявителя. Но и в этом случае испытания должны быть выполнены так, как требует конкретный техрегламент, — «своя лаборатория» не означает «любая».
+    </div>
+
+    <div class="legend">
+      <span class="tag t-norm">норма</span> — требование акта ЕАЭС или ТР
+      <span class="tag t-fts">разъяснение</span> — позиция ведомства/практика применения
+      <span class="tag t-prac">практика</span> — подход для импортёра
+      <span class="tag t-check">проверить</span> — требует сверки по вашему ТР
+    </div>
+  </section>
+
+  <!-- ================= 2. SCHEMES ================= -->
+  <section class="card" id="schemes">
+    <div class="section-kicker">02 · Четыре схемы</div>
+    <h2>1д, 2д, 3д, 4д — по отдельности</h2>
+    <p class="lead">Пары 1д–3д и 2д–4д различаются лабораторией: в первых допускается собственная лаборатория изготовителя, во вторых — только аккредитованная. Пары 1д–2д и 3д–4д различаются объектом: серия или партия.</p>
+
+    <div class="report">
+      <div class="num">1д</div>
+      <div>
+        <h3>Серия, свои доказательства</h3>
+        <span class="tag t-norm">норма</span><span class="tag t-prac">практика</span>
+        <p class="human">Изготовитель сам собирает доказательства и проводит испытания в своей лаборатории, а также ведёт производственный контроль. Декларация действует на серию.</p>
+        <div class="exact">Схема 1д — декларирование серийно выпускаемой продукции на основании собственных доказательств заявителя; заявитель — изготовитель или уполномоченное им лицо.</div>
+        <div class="meta">
+          <div><b>Лаборатория</b>Своя (изготовителя)</div>
+          <div><b>Контроль</b>Да</div>
+          <div><b>Срок</b>Серия, до 5 лет</div>
+          <div><b>Заявитель</b>Изготовитель / уполномоченное лицо</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="report">
+      <div class="num">2д</div>
+      <div>
+        <h3>Партия, свои доказательства</h3>
+        <span class="tag t-norm">норма</span><span class="tag t-prac">практика</span>
+        <p class="human">То же самое, но на конкретную партию и без производственного контроля. Подходит, если у поставщика есть свои протоколы испытаний на эту партию.</p>
+        <div class="exact">Схема 2д — декларирование партии продукции на основании собственных доказательств заявителя, без производственного контроля.</div>
+        <div class="meta">
+          <div><b>Лаборатория</b>Своя (изготовителя)</div>
+          <div><b>Контроль</b>Нет</div>
+          <div><b>Срок</b>На партию</div>
+          <div><b>Заявитель</b>Изготовитель / уполномоченное лицо; продавец — если ТР допускает</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="report">
+      <div class="num">3д</div>
+      <div>
+        <h3>Серия, аккредитованная лаборатория</h3>
+        <span class="tag t-norm">норма</span><span class="tag t-prac">практика</span>
+        <p class="human">Испытания делает независимая аккредитованная лаборатория, изготовитель ведёт производственный контроль. Декларация на серию — обычно до 5 лет.</p>
+        <div class="exact">Схема 3д — декларирование серийно выпускаемой продукции с проведением испытаний в аккредитованной испытательной лаборатории (центре) и производственным контролем.</div>
+        <div class="meta">
+          <div><b>Лаборатория</b>Аккредитованная</div>
+          <div><b>Контроль</b>Да</div>
+          <div><b>Срок</b>Серия, до 5 лет</div>
+          <div><b>Заявитель</b>Изготовитель / уполномоченное лицо</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="report">
+      <div class="num">4д</div>
+      <div>
+        <h3>Партия, аккредитованная лаборатория</h3>
+        <span class="tag t-norm">норма</span><span class="tag t-prac">практика</span>
+        <p class="human">Самый реалистичный вариант для импортёра через трейдера: испытания в аккредитованной лаборатории, декларация на партию, без производственного контроля.</p>
+        <div class="exact">Схема 4д — декларирование партии продукции с проведением испытаний в аккредитованной испытательной лаборатории (центре), без производственного контроля.</div>
+        <div class="meta">
+          <div><b>Лаборатория</b>Аккредитованная</div>
+          <div><b>Контроль</b>Нет</div>
+          <div><b>Срок</b>На партию</div>
+          <div><b>Заявитель</b>Изготовитель / уполномоченное лицо / продавец — если ТР допускает</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="fine">
+      <strong>Главное ограничение.</strong> Заявителем может быть только лицо, зарегистрированное в ЕАЭС. Китайский завод сам подать декларацию не может — нужен либо импортёр как продавец (если ТР это разрешает), либо уполномоченное лицо завода-резидента.
+    </div>
+  </section>
+
+  <!-- ================= 3. TABLE ================= -->
+  <section class="card" id="table">
+    <div class="section-kicker">03 · Главная таблица</div>
+    <h2>Сравнение схем</h2>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Схема</th>
+            <th>Лаборатория</th>
+            <th>Производственный контроль</th>
+            <th>Срок действия</th>
+            <th>Кто может быть заявителем</th>
+            <th>Для кого подходит</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1д</strong></td>
+            <td>Своя лаборатория изготовителя</td>
+            <td><span class="yes">✔ да</span></td>
+            <td>Серия, до 5 лет</td>
+            <td>Изготовитель или уполномоченное лицо</td>
+            <td>Серийное производство с собственным контролем; импортёру через трейдера обычно не подходит</td>
+          </tr>
+          <tr>
+            <td><strong>2д</strong></td>
+            <td>Своя лаборатория изготовителя</td>
+            <td><span class="no">✖ нет</span></td>
+            <td>На партию</td>
+            <td>Изготовитель, уполномоченное лицо; продавец — <strong>только если ТР допускает</strong></td>
+            <td>Партия при наличии протоколов изготовителя</td>
+          </tr>
+          <tr>
+            <td><strong>3д</strong></td>
+            <td>Аккредитованная</td>
+            <td><span class="yes">✔ да</span></td>
+            <td>Серия, до 5 лет</td>
+            <td>Изготовитель или уполномоченное лицо</td>
+            <td>Серийный импорт через уполномоченное лицо завода</td>
+          </tr>
+          <tr>
+            <td><strong>4д</strong></td>
+            <td>Аккредитованная</td>
+            <td><span class="no">✖ нет</span></td>
+            <td>На партию</td>
+            <td>Изготовитель, уполномоченное лицо; продавец — <strong>только если ТР допускает</strong></td>
+            <td>Оптимальный вариант для импортёра через трейдера</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="small">Срок «до 5 лет» — ориентир для серийных схем; конкретный срок зависит от техрегламента и вида продукции.</p>
+  </section>
+
+  <!-- ================= 4. APPLICANT ================= -->
+  <section class="card" id="applicant">
+    <div class="section-kicker">04 · Ключевой вопрос</div>
+    <h2>Кто может быть заявителем — и почему это важно</h2>
+
+    <p><strong>Заявитель</strong> — это лицо, которое принимает декларацию, несёт ответственность за её достоверность и указывается в реестре. Поэтому вопрос «кто заявитель» важнее, чем вопрос «какая схема»: неверный заявитель — это недействительная декларация.</p>
+
+    <div class="grid3">
+      <div class="mini">
+        <h4>Изготовитель</h4>
+        <p class="small">Может быть заявителем, если зарегистрирован в ЕАЭС. Иностранный завод напрямую — нет.</p>
+      </div>
+      <div class="mini">
+        <h4>Уполномоченное лицо</h4>
+        <p class="small">Резидент ЕАЭС, действующий от имени изготовителя по договору или доверенности. Обычный путь для импорта.</p>
+      </div>
+      <div class="mini">
+        <h4>Продавец</h4>
+        <p class="small">Может быть заявителем в 2д/4д, но только если это прямо допускает конкретный техрегламент.</p>
+      </div>
+    </div>
+
+    <div class="warning">
+      <strong>Не универсальное правило.</strong> Фраза «продавец может быть заявителем в 2д/4д» верна не всегда. В одних техрегламентах продавец прямо назван среди заявителей, в других — нет. Если ТР не допускает продавца, заявителем может быть только изготовитель или уполномоченное лицо. Проверяйте текст своего техрегламента <span class="tag t-check">проверить</span>.
+    </div>
+
+    <div class="osno">
+      <strong>Почему импортёру через трейдера сложно с 1д и 3д.</strong> Это серийные схемы: декларация оформляется изготовителем или его уполномоченным лицом и действует на весь серийный выпуск. Импортёр, который просто купил партию у трейдера, обычно не является ни изготовителем, ни уполномоченным лицом — значит, эти схемы ему недоступны.
+    </div>
+  </section>
+
+  <!-- ================= 5. FLOW ================= -->
+  <section class="card" id="flow">
+    <div class="section-kicker">05 · Инфографика</div>
+    <h2>Как выбрать схему</h2>
+
+    <div class="flow">
+      <div class="node"><b>1. Кто заявитель?</b>Изготовитель / уполномоченное лицо / продавец</div>
+      <div class="arrow">→</div>
+      <div class="node"><b>2. Серия или партия?</b>Серия — долго, партия — на поставку</div>
+      <div class="arrow">→</div>
+      <div class="node"><b>3. Лаборатория?</b>Своя или аккредитованная</div>
+      <div class="arrow">→</div>
+      <div class="node"><b>4. Схема</b>1д / 2д / 3д / 4д</div>
+    </div>
+
+    <p class="small">Если на первом шаге ответ «импортёр-продавец, и ТР это допускает» — дальше почти всегда партия и аккредитованная лаборатория, то есть 4д.</p>
+  </section>
+
+  <!-- ================= 6. STATUS ================= -->
+  <section class="card" id="status">
+    <div class="section-kicker">06 · Светофор</div>
+    <h2>Что реально доступно импортёру</h2>
+
+    <div class="lights">
+      <div class="light l-green">
+        <b>🟢 4д</b>
+        Партия, аккредитованная лаборатория, продавец разрешён техрегламентом. Самый рабочий вариант для импортёра через трейдера.
+      </div>
+      <div class="light l-yellow">
+        <b>🟡 2д</b>
+        Партия, своя лаборатория изготовителя. Нужны собственные протоколы R8, и ТР должен допускать продавца как заявителя.
+      </div>
+      <div class="light l-red">
+        <b>🔴 1д / 3д</b>
+        Серийные схемы: заявитель — завод или его уполномоченное лицо. Для импортёра, покупающего партию у трейдера, обычно недоступны.
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 7. LIMITS ================= -->
+  <section class="card" id="limits">
+    <div class="section-kicker">07 · Ограничения</div>
+    <h2>Когда схемы 1д и 2д недоступны</h2>
+
+    <div class="warning">
+      <strong>Легпром: ТР ТС 017/2011.</strong> С 26 апреля 2026 г. действует редакция, изменённая Решением Совета ЕЭК от 12.09.2025 № 75. Для продукции, названной в пунктах 4 и 15 статьи 11 ТР ТС 017/2011 (значительная часть одежды, обуви, текстиля, кожи и т.п.), декларирование допускается по схемам <strong>3д, 4д, 6д</strong> — схемы 1д и 2д не применяются. Для импортной продукции схема 1д исключена.
+    </div>
+
+    <div class="note">
+      <strong>Осторожно с обобщением.</strong> Не вся продукция лёгкой промышленности попадает под этот запрет: он касается позиций, перечисленных в указанных пунктах ТР. Для остальной продукции схемы 1д/2д могут сохраняться, но с дополнительными ограничениями (например, по лаборатории). Проверяйте свой товар по перечню и действующей редакции ТР <span class="tag t-check">проверить</span>.
+    </div>
+
+    <div class="fine">
+      <strong>Другие техрегламенты тоже могут ограничивать схемы.</strong> Решение № 44 задаёт типовые схемы, но каждый ТР указывает, какие из них применимы к его продукции. Поэтому «в ТР ТС 010/2011 написано так» не означает, что так же будет в ТР ТС 032/2013 или ТР ТС 017/2011.
+    </div>
+  </section>
+
+  <!-- ================= 8. CHOOSE ================= -->
+  <section class="card" id="choose">
+    <div class="section-kicker">08 · Перед выбором</div>
+    <h2>Что проверить</h2>
+
+    <ul>
+      <li>☐ Определён конкретный техрегламент (или несколько) для вашего товара</li>
+      <li>☐ Открыт текст ТР и раздел о схемах декларирования</li>
+      <li>☐ Проверено, допускает ли ТР продавца в схемах 2д/4д</li>
+      <li>☐ Проверено, нет ли ограничений по группе товаров (легпром, детские товары и др.)</li>
+      <li>☐ Понятно, может ли R8 дать собственные протоколы испытаний для 2д</li>
+      <li>☐ Есть бюджет на аккредитованную лабораторию для 4д</li>
+      <li>☐ Определено, кто будет заявителем: импортёр, уполномоченное лицо или завод</li>
+      <li>☐ Проверено, что заявитель зарегистрирован в ЕАЭС</li>
+    </ul>
+  </section>
+
+  <!-- ================= 9. EXAMPLES ================= -->
+  <section class="card" id="examples">
+    <div class="section-kicker">09 · Примеры</div>
+    <h2>Три ситуации на пальцах</h2>
+
+    <div class="grid3">
+      <div class="mini">
+        <h4>Пример 1. Один контейнер, 4д</h4>
+        <p class="small">Импортёр везёт один контейнер товара. Техрегламент допускает продавца как заявителя. Импортёр обращается в аккредитованную лабораторию, получает протокол и оформляет декларацию на партию по 4д.</p>
+      </div>
+      <div class="mini">
+        <h4>Пример 2. ТР не допускает продавца</h4>
+        <p class="small">Тот же импортёр, но в техрегламенте продавец не назван. Тогда заявителем должен быть изготовитель или его уполномоченное лицо-резидент ЕАЭС. Без этого декларация по 4д невозможна.</p>
+      </div>
+      <div class="mini">
+        <h4>Пример 3. Текстиль</h4>
+        <p class="small">Одежда или обувь из перечня ТР ТС 017/2011: с 26.04.2026 доступны 3д, 4д, 6д; 1д и 2д не применяются. Для импортёра рабочий вариант — 4д на партию.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 10. MISTAKES ================= -->
+  <section class="card" id="mistakes">
+    <div class="section-kicker">10 · Ошибки</div>
+    <h2>Частые ошибки</h2>
+
+    <ul>
+      <li><strong>Считать, что продавец всегда может быть заявителем в 2д/4д.</strong> Только если ТР это допускает.</li>
+      <li><strong>Выбирать 1д для импортной продукции.</strong> Заявитель — завод, а не импортёр; для импорта схема часто недоступна.</li>
+      <li><strong>Путать 1д и 3д.</strong> Разница только в лаборатории, но именно она определяет стоимость и сроки.</li>
+      <li><strong>Путать 2д и 4д.</strong> Та же логика: партия одна, но лаборатория разная.</li>
+      <li><strong>Не проверять ограничения по группе товаров.</strong> Для легпрома с 2026 года действуют отдельные правила.</li>
+      <li><strong>Оформлять декларацию на иностранного изготовителя.</strong> Заявитель должен быть резидентом ЕАЭС.</li>
+      <li><strong>Подавать декларацию без протокола испытаний.</strong> Для 3д/4д протокол аккредитованной лаборатории обязателен.</li>
+      <li><strong>Считать, что «своя лаборатория» = любая.</strong> Требования к лаборатории устанавливает техрегламент.</li>
+    </ul>
+  </section>
+
+  <!-- ================= 11. TIMELINE ================= -->
+  <section class="card" id="timeline">
+    <div class="section-kicker">11 · Хронология</div>
+    <h2>Путь к декларации</h2>
+
+    <ol class="timeline">
+      <li><b>Выбор схемы</b>Определяете ТР, заявителя и доступные схемы.</li>
+      <li><b>Лаборатория</b>Своя (1д/2д) или аккредитованная (3д/4д); получаете протокол.</li>
+      <li><b>Декларация</b>Формируете и подписываете декларацию о соответствии.</li>
+      <li><b>Регистрация в ФСА</b>Декларация регистрируется в реестре Росаккредитации.</li>
+      <li><b>Декларирование в таможне</b>Указываете реквизиты декларации в ДТ; таможня проверяет сведения.</li>
+    </ol>
+  </section>
+
+  <!-- ================= 12. CORRECTIONS ================= -->
+  <section class="card" id="corr">
+    <div class="section-kicker">12 · Что уточнено</div>
+    <h2>Исправления к черновику</h2>
+    <p class="lead">В исходных формулировках было три обобщения, которые могут привести к неверному выбору схемы.</p>
+
+    <div class="corr">
+      <h3>1. «Продавец может быть заявителем в 2д/4д»</h3>
+      <div class="row">
+        <span>Было</span>
+        <span>Как общее правило для обеих схем.</span>
+      </div>
+      <div class="row">
+        <span>Стало</span>
+        <span>Только если конкретный техрегламент прямо допускает продавца. Иначе — изготовитель или уполномоченное лицо.</span>
+      </div>
+      <div class="row">
+        <span>Почему</span>
+        <span>Техрегламенты отличаются: в одном продавец назван, в другом нет. Универсальная формулировка приводит к подаче декларации ненадлежащим заявителем.</span>
+      </div>
+    </div>
+
+    <div class="corr">
+      <h3>2. «Для текстиля 1д/2д запрещены»</h3>
+      <div class="row">
+        <span>Было</span>
+        <span>Запрет подан как общий для всей лёгкой промышленности.</span>
+      </div>
+      <div class="row">
+        <span>Стало</span>
+        <span>Запрет касается продукции, названной в пунктах 4 и 15 статьи 11 ТР ТС 017/2011; для неё доступны 3д, 4д, 6д. Для остальной продукции 1д/2д могут сохраняться с ограничениями. Для импорта схема 1д исключена.</span>
+      </div>
+      <div class="row">
+        <span>Почему</span>
+        <span>Точная привязка к перечню позволяет не отказываться от допустимой схемы там, где запрет не действует, и не выбрать запрещённую там, где он действует.</span>
+      </div>
+    </div>
+
+    <div class="corr">
+      <h3>3. «Сам себе эксперт»</h3>
+      <div class="row">
+        <span>Было</span>
+        <span>Разговорное выражение как характеристика схем 1д/2д.</span>
+      </div>
+      <div class="row">
+        <span>Стало</span>
+        <span>Юридически — декларирование на основании собственных доказательств заявителя; испытания проводятся в лаборатории, отвечающей требованиям техрегламента.</span>
+      </div>
+      <div class="row">
+        <span>Почему</span>
+        <span>«Сам себе эксперт» создаёт ложное впечатление, что протоколы не нужны и требования к лаборатории отсутствуют.</span>
+      </div>
+    </div>
+
+    <div class="corr">
+      <h3>4. Иностранный завод как заявитель</h3>
+      <div class="row">
+        <span>Было</span>
+        <span>Не отражено, кто может подать декларацию.</span>
+      </div>
+      <div class="row">
+        <span>Стало</span>
+        <span>Заявитель должен быть зарегистрирован в ЕАЭС. Иностранный изготовитель действует через уполномоченное лицо-резидента; импортёр может быть заявителем только как продавец и только если ТР это допускает.</span>
+      </div>
+      <div class="row">
+        <span>Почему</span>
+        <span>Это ключевое ограничение для схемы «Китай — трейдер — Россия»: без резидента-заявителя декларация невозможна.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 13. GLOSSARY ================= -->
+  <section class="card" id="glossary">
+    <div class="section-kicker">13 · Словарь</div>
+    <h2>Глоссарий</h2>
+
+    <div class="grid2">
+      <div class="mini"><h4>ТР ТС / ТР ЕАЭС</h4><p class="small">Технический регламент Таможенного союза или ЕАЭС — акт с обязательными требованиями к продукции.</p></div>
+      <div class="mini"><h4>Декларация о соответствии</h4><p class="small">Документ, которым заявитель подтверждает соответствие продукции требованиям техрегламента.</p></div>
+      <div class="mini"><h4>Серия</h4><p class="small">Серийно выпускаемая продукция; декларация действует на весь выпуск в течение срока действия.</p></div>
+      <div class="mini"><h4>Партия</h4><p class="small">Конкретное количество товара, поставленное по одному документу; декларация действует только на неё.</p></div>
+      <div class="mini"><h4>Аккредитованная лаборатория</h4><p class="small">Независимая испытательная лаборатория, аккредитованная в установленном порядке.</p></div>
+      <div class="mini"><h4>Производственный контроль</h4><p class="small">Регулярные проверки изготовителем соответствия серийной продукции.</p></div>
+      <div class="mini"><h4>Заявитель</h4><p class="small">Лицо, принимающее декларацию и отвечающее за её достоверность; должно быть резидентом ЕАЭС.</p></div>
+      <div class="mini"><h4>Уполномоченное лицо</h4><p class="small">Резидент ЕАЭС, действующий от имени изготовителя по договору или доверенности.</p></div>
+      <div class="mini"><h4>ЕАЭС</h4><p class="small">Евразийский экономический союз — единая таможенная территория и единые техрегламенты.</p></div>
+      <div class="mini"><h4>ФСА / Росаккредитация</h4><p class="small">Федеральная служба по аккредитации; ведёт реестр деклараций о соответствии.</p></div>
+      <div class="mini"><h4>Протокол испытаний</h4><p class="small">Документ лаборатории с результатами испытаний, подтверждающий соответствие.</p></div>
+      <div class="mini"><h4>6д</h4><p class="small">Более строгая серийная схема декларирования; применяется, в частности, для части продукции легпрома после 26.04.2026.</p></div>
+    </div>
+  </section>
+
+  <!-- ================= 14. SUMMARY ================= -->
+  <section class="box summary" id="summary">
+    <h2>Резюме: шесть тезисов</h2>
+    <ol>
+      <li>1д и 3д — схемы для серии, 2д и 4д — для партии; разница между 1д и 3д (и между 2д и 4д) только в лаборатории.</li>
+      <li>1д/2д — собственные доказательства; 3д/4д — испытания в аккредитованной лаборатории.</li>
+      <li>Производственный контроль есть у серийных схем (1д, 3д) и отсутствует у партийных (2д, 4д).</li>
+      <li>Импортёру через трейдера реалистичнее 4д; 2д — если есть протоколы R8 и ТР допускает продавца.</li>
+      <li>Продавец может быть заявителем в 2д/4д только если это прямо разрешено техрегламентом; иначе нужен изготовитель или уполномоченное лицо-резидент ЕАЭС.</li>
+      <li>Для части легпрома (ТР ТС 017/2011, п. 4 и 15 ст. 11) с 26.04.2026 доступны только 3д, 4д, 6д; для импорта 1д исключена.</li>
+    </ol>
+  </section>
+
+  <!-- ================= 15. SOURCES ================= -->
+  <section class="card sources" id="sources">
+    <div class="section-kicker">15 · Источники</div>
+    <h2>Источники</h2>
+    <p class="lead">Что именно подтверждает каждый акт.</p>
+
+    <ol>
+      <li>
+        <strong>Решение Совета ЕЭК от 18.04.2018 № 44 «О типовых схемах оценки соответствия»</strong>.
+        <span class="what">Типовые схемы декларирования и сертификации: 1д, 2д, 3д, 4д, 5д, 6д; соотношение «серия/партия» и требования к лаборатории.</span>
+      </li>
+      <li>
+        <strong>Решение Совета ЕЭК от 12.09.2025 № 75 «О внесении изменений в технический регламент Таможенного союза „О безопасности продукции легкой промышленности“ (ТР ТС 017/2011)»</strong>.
+        <span class="what">Ограничения по схемам декларирования для отдельных видов продукции легпрома; применяется с 26.04.2026.</span>
+      </li>
+      <li>
+        <strong>ТР ТС 017/2011 «О безопасности продукции легкой промышленности»</strong> (в редакции с 26.04.2026).
+        <span class="what">Статья 11 — формы подтверждения соответствия и допустимые схемы; пункты 4 и 15 — перечни продукции, для которой предусмотрены только 3д, 4д, 6д.</span>
+      </li>
+      <li>
+        <strong>ТР ТС 010/2011 «О безопасности машин и оборудования»; ТР ТС 032/2013 «О безопасности оборудования, работающего под избыточным давлением»</strong> (и иные ТР — по вашему товару).
+        <span class="what">Каждый техрегламент самостоятельно указывает допустимые схемы декларирования и требования к заявителю; универсального перечня нет. <span class="tag t-check">проверить по конкретному ТР</span></span>
+      </li>
+      <li>
+        <strong>Федеральный закон от 27.12.2002 № 184-ФЗ «О техническом регулировании»</strong>.
+        <span class="what">Общие положения о подтверждении соответствия и декларировании (в части, не урегулированной актами ЕАЭС).</span>
+      </li>
+      <li>
+        <strong>Реестр деклараций о соответствии ФСА (Росаккредитация)</strong>.
+        <span class="what">Регистрация деклараций, проверка статуса и сведений о заявителе.</span>
+      </li>
+    </ol>
+
+    <p class="small"><strong>Информация актуальна на 12 ноября 2026 г.</strong> Пометки «проверить» означают, что перед выбором схемы нужно открыть текст своего техрегламента в действующей редакции и проверить перечень схем и требования к заявителю. Памятка не является юридическим заключением по конкретному товару.</p>
+  </section>
+
+</main>
+
+<footer>
+  <div class="container">
+    Памятка для личного использования участником ВЭД · импорт · схемы декларирования
+  </div>
+</footer>
+
+<a class="up" href="#top" aria-label="Наверх">↑</a>
+
+<style>
+.nav-back { position: fixed; bottom: 24px; right: 24px; background: #0d3b66; color: #fff !important; padding: 10px 16px; border-radius: 8px; text-decoration: none; font-family: "Segoe UI", Arial, sans-serif; font-size: 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 9999; transition: background 0.2s; font-weight: 600; }
+.nav-back:hover { background: #1e5a99; }
+</style>
+<a href="index.html" class="nav-back">← Назад в меню</a>
+</body>
+</html>

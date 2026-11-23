@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Как определить код ТН ВЭД и проверить запреты и ограничения</title>
+<style>
+  :root{
+    --bg:#eef2f7;
+    --ink:#16202e;
+    --muted:#5b6779;
+    --line:#d5dee9;
+    --accent:#1f4e79;
+    --accent-2:#2f6b95;
+    --accent-soft:#eaf2f9;
+    --green:#1f6b3f;
+    --green-soft:#e9f6ee;
+    --red:#a8231b;
+    --red-soft:#fdf0ee;
+    --amber:#8a5a06;
+    --amber-soft:#fff7e3;
+    --radius:16px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font:16px/1.58 system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .wrap{max-width:960px;margin:0 auto;padding:0 18px 70px;}
+
+  /* ================= HERO ================= */
+  .hero{
+    position:relative;
+    overflow:hidden;
+    margin:22px 0 0;
+    padding:38px 36px 34px;
+    border-radius:22px;
+    color:#fff;
+    background:linear-gradient(135deg,#0f2c44 0%,#1f4e79 52%,#3a769f 100%);
+    box-shadow:0 16px 38px rgba(18,45,70,.22);
+  }
+  .hero::after{
+    content:"";
+    position:absolute;
+    right:-90px;top:-100px;
+    width:300px;height:300px;
+    border-radius:50%;
+    background:radial-gradient(circle,rgba(255,255,255,.14),rgba(255,255,255,0) 70%);
+  }
+  .hero .badge-top{
+    display:inline-block;
+    padding:5px 13px;
+    border-radius:100px;
+    background:rgba(255,255,255,.16);
+    border:1px solid rgba(255,255,255,.28);
+    font-size:12px;
+    font-weight:600;
+  }
+  .hero h1{
+    margin:14px 0 10px;
+    max-width:820px;
+    font-size:30px;
+    line-height:1.22;
+    letter-spacing:-.015em;
+  }
+  .hero .sub{
+    margin:0;
+    max-width:760px;
+    font-size:16.4px;
+    line-height:1.5;
+    color:#dce8f2;
+  }
+  .hero-pills{display:flex;flex-wrap:wrap;gap:9px;margin-top:20px;}
+  .hero-pills span{
+    padding:7px 14px;
+    border-radius:100px;
+    background:rgba(255,255,255,.12);
+    border:1px solid rgba(255,255,255,.25);
+    font-size:13.4px;
+    font-weight:600;
+  }
+
+  /* ================= TOC ================= */
+  .toc{
+    position:sticky;
+    top:0;
+    z-index:30;
+    margin:16px 0 26px;
+    background:rgba(255,255,255,.94);
+    backdrop-filter:blur(8px);
+    border:1px solid var(--line);
+    border-radius:14px;
+    box-shadow:0 6px 18px rgba(20,40,70,.07);
+  }
+  .toc-inner{display:flex;gap:4px;padding:9px 10px;overflow-x:auto;scrollbar-width:thin;}
+  .toc a{
+    flex:0 0 auto;
+    padding:6px 10px;
+    border-radius:8px;
+    color:#2b3b4f;
+    font-size:13.2px;
+    font-weight:600;
+    text-decoration:none;
+    white-space:nowrap;
+  }
+  .toc a:hover{background:var(--accent-soft);color:var(--accent);}
+
+  /* ================= CARDS ================= */
+  .card{
+    margin:0 0 20px;
+    padding:24px 26px;
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    box-shadow:0 2px 4px rgba(20,40,70,.04),0 10px 24px rgba(20,40,70,.05);
+    scroll-margin-top:78px;
+  }
+  .section-kicker{
+    display:inline-block;
+    margin-bottom:8px;
+    padding:3px 9px;
+    border-radius:6px;
+    background:var(--accent-soft);
+    color:var(--accent);
+    font-size:11.2px;
+    font-weight:700;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+  }
+  .card h2{margin:0 0 8px;font-size:22px;line-height:1.28;letter-spacing:-.01em;}
+  .card .lead{margin:0 0 14px;color:#38465a;font-size:15.6px;}
+
+  h3{font-size:16px;margin:18px 0 7px;line-height:1.35;}
+  p{margin:8px 0;}
+  ul,ol{margin:8px 0;padding-left:22px;}
+  li{margin:5px 0;}
+  a{color:var(--accent);text-decoration:none;border-bottom:1px solid #b9cfe2;word-break:break-word;}
+  a:hover{border-bottom-color:var(--accent);}
+
+  /* ================= LEGEND / TAGS ================= */
+  .legend{display:flex;flex-wrap:wrap;gap:8px 14px;margin:0 0 16px;font-size:13px;color:var(--muted);}
+  .tag{
+    display:inline-block;
+    padding:3px 8px;
+    border-radius:5px;
+    border:1px solid transparent;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+  }
+  .tag-norm{background:#e8f0fb;color:#1f4e79;border-color:#c5d9ef;}
+  .tag-fts{background:#e3f2f1;color:#0e5a5a;border-color:#b6dbd8;}
+  .tag-prac{background:#fdf3e2;color:#7a4f06;border-color:#ecd3a6;}
+  .tag-red{background:var(--red-soft);color:var(--red);border-color:#e7bdb7;}
+  .tag-green{background:var(--green-soft);color:var(--green);border-color:#bfe0cc;}
+
+  /* ================= BOXES ================= */
+  .note,.warning,.fine,.deadline,.ausn,.osno,.summary{
+    margin:14px 0;
+    padding:14px 17px;
+    border-radius:12px;
+    font-size:14.6px;
+  }
+  .note{background:#f5f8fb;border:1px solid #dbe5ee;border-left:4px solid #8aa6c0;}
+  .warning{background:var(--amber-soft);border:1px solid #ecd9a8;border-left:5px solid #b8860b;}
+  .fine{background:var(--red-soft);border:1px solid #eccac5;border-left:5px solid var(--red);}
+  .deadline{background:var(--accent-soft);border:1px solid #c9dcef;border-left:5px solid var(--accent);}
+  .ausn{background:var(--green-soft);border:1px solid #c6e3d2;border-left:5px solid var(--green);}
+  .osno{background:#f2f6fc;border:1px solid #c8d9ee;border-left:5px solid #2c5f96;}
+  .summary{
+    padding:20px 22px;
+    border:0;
+    color:#eef5fb;
+    background:linear-gradient(135deg,#173752,#1f4e79);
+  }
+  .summary h3{margin-top:0;color:#fff;}
+  .summary ol{padding-left:20px;}
+  .summary li{margin:7px 0;}
+  .box-title{
+    display:block;
+    margin-bottom:4px;
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    opacity:.9;
+  }
+
+  /* ================= REPORT CARDS ================= */
+  .report{
+    margin:14px 0;
+    padding:16px 18px;
+    background:#fcfdfe;
+    border:1px solid var(--line);
+    border-radius:14px;
+    scroll-margin-top:78px;
+  }
+  .report-head{display:flex;gap:14px;align-items:flex-start;}
+  .num{
+    flex:0 0 44px;
+    width:44px;height:44px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:10px;
+    background:var(--accent);
+    color:#fff;
+    font-size:15px;
+    font-weight:800;
+    text-align:center;
+    line-height:1.1;
+  }
+  .num.green{background:var(--green);}
+  .num.grey{background:#5d6c80;}
+  .num.amber{background:#a8741a;}
+  .report h3{margin:1px 0 2px;font-size:16.5px;}
+  .report .sub{margin:0;font-size:13.8px;color:var(--muted);}
+  .report .tags{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 8px;}
+  .meta{margin:0;padding:0;border:0;}
+  .meta > div{
+    display:grid;
+    grid-template-columns:150px 1fr;
+    gap:10px;
+    padding:7px 0;
+    border-top:1px dotted var(--line);
+    font-size:14.2px;
+  }
+  .meta dt{margin:0;font-weight:700;color:#2c3a4d;}
+  .meta dd{margin:0;color:#33415a;}
+
+  /* ================= STEPS ================= */
+  ol.steps{list-style:none;counter-reset:st;margin:14px 0;padding:0;}
+  ol.steps > li{
+    counter-increment:st;
+    position:relative;
+    margin:0 0 4px 15px;
+    padding:0 0 16px 46px;
+    border-left:2px solid #c9dcef;
+  }
+  ol.steps > li:last-child{border-left-color:transparent;padding-bottom:0;}
+  ol.steps > li::before{
+    content:counter(st);
+    position:absolute;left:-16px;top:0;
+    width:30px;height:30px;
+    display:flex;align-items:center;justify-content:center;
+    border-radius:50%;
+    background:var(--accent);
+    color:#fff;
+    font-size:14px;
+    font-weight:700;
+  }
+  ol.steps h3{margin:2px 0 4px;font-size:15.5px;}
+  .human{margin:2px 0 4px;font-size:14.6px;}
+  .human::before{content:"По-человечески: ";font-weight:700;color:var(--accent-2);}
+  .exact{
+    margin:2px 0 0;
+    padding:7px 10px;
+    background:#fafbfd;
+    border:1px dashed var(--line);
+    border-radius:6px;
+    color:#3c4a5c;
+    font-size:13.6px;
+  }
+  .exact::before{content:"Точно: ";font-weight:700;color:var(--muted);}
+
+  /* ================= FLOW ================= */
+  .flow{
+    display:flex;
+    align-items:stretch;
+    justify-content:center;
+    gap:4px;
+    margin:16px 0;
+    padding:18px 14px;
+    background:#fbfcfe;
+    border:1px solid var(--line);
+    border-radius:14px;
+  }
+  .flow .node{
+    flex:1 1 0;
+    min-width:0;
+    padding:11px 9px;
+    background:#fff;
+    border:1.5px solid #c9dcef;
+    border-top:4px solid var(--accent);
+    border-radius:9px;
+    text-align:center;
+    font-size:12.7px;
+    line-height:1.4;
+  }
+  .flow .node b{display:block;margin-bottom:3px;font-size:13.3px;}
+  .flow .node span{color:var(--muted);font-size:11.9px;}
+  .flow .node.hi{background:var(--accent-soft);border-top-color:var(--accent-2);}
+  .flow .arrow{
+    flex:0 0 20px;
+    display:flex;align-items:center;justify-content:center;
+    color:var(--accent);
+    font-size:18px;font-weight:700;
+  }
+  .flow .arrow::before{content:"→";}
+  .flow-caption{margin:-6px 0 14px;font-size:12.6px;color:var(--muted);text-align:center;line-height:1.45;}
+
+  /* ================= TABLE ================= */
+  .table-wrap{margin:14px 0;overflow-x:auto;border:1px solid var(--line);border-radius:12px;}
+  table{width:100%;min-width:720px;border-collapse:collapse;background:#fff;font-size:13.6px;}
+  caption{caption-side:top;padding:8px 10px 6px;background:#f7f9fc;color:var(--muted);font-size:12.8px;text-align:left;}
+  th,td{
+    padding:9px 11px;
+    border-right:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    text-align:left;
+    vertical-align:top;
+  }
+  th:last-child,td:last-child{border-right:0;}
+  tbody tr:last-child td{border-bottom:0;}
+  th{background:#eef4fa;font-size:13px;font-weight:700;}
+  tbody tr:nth-child(even) td{background:#fafbfd;}
+  .yes{color:var(--green);font-weight:700;}
+  .no{color:var(--red);font-weight:700;}
+
+  /* ================= CHECKLIST ================= */
+  .checklist{list-style:none;margin:10px 0;padding-left:0;}
+  .checklist li{position:relative;margin:9px 0;padding-left:32px;}
+  .checklist li::before{content:"☐";position:absolute;left:0;top:-1px;color:var(--accent);font-size:19px;}
+
+  /* ================= GLOSSARY ================= */
+  dl.glossary{display:grid;grid-template-columns:1fr 1fr;gap:0 28px;margin:12px 0;}
+  dl.glossary > div{padding:8px 0;border-bottom:1px dotted var(--line);}
+  dl.glossary dt{font-weight:700;font-size:14.4px;}
+  dl.glossary dd{margin:2px 0 0;font-size:14px;color:#3a465c;}
+
+  /* ================= SOURCES ================= */
+  .sources .source{margin:16px 0;padding:4px 0 4px 14px;border-left:3px solid #c3d3e2;}
+  .sources .source h3{margin:0 0 3px;font-size:15px;}
+  .sources .req{margin:0 0 5px;font-size:12.8px;color:var(--muted);}
+  .sources .source p{margin:5px 0;font-size:14.2px;}
+  .sources .link{font-size:12.9px;}
+  .actual{
+    margin-top:18px;
+    padding:11px 14px;
+    background:#f2f6fa;
+    border:1px dashed #c3d3e2;
+    border-radius:10px;
+    font-size:13.4px;
+    color:#3d4b60;
+  }
+
+  .flag{
+    display:inline-block;
+    padding:0 5px;
+    border-radius:3px;
+    background:var(--amber-soft);
+    color:#6d4f00;
+    font-size:11.5px;
+    font-weight:700;
+    white-space:nowrap;
+  }
+  .small{font-size:13px;color:var(--muted);}
+
+  footer{
+    margin-top:26px;
+    padding-top:14px;
+    border-top:1px solid var(--line);
+    font-size:12.7px;
+    line-height:1.5;
+    color:var(--muted);
+  }
+
+  /* ================= UP ================= */
+  .up{
+    position:fixed;
+    right:20px;bottom:20px;
+    z-index:40;
+    display:flex;align-items:center;justify-content:center;
+    width:46px;height:46px;
+    border-radius:50%;
+    background:var(--accent);
+    color:#fff;
+    font-size:19px;
+    text-decoration:none;
+    box-shadow:0 8px 20px rgba(20,50,80,.28);
+  }
+  .up:hover{background:#163b5c;}
+
+  /* ================= ADAPTIVE ================= */
+  @media (max-width:800px){
+    .hero{padding:28px 22px 26px;border-radius:18px;}
+    .hero h1{font-size:24px;}
+    .hero .sub{font-size:15.2px;}
+    .card{padding:20px 18px;}
+    .flow{flex-direction:column;gap:0;}
+    .flow .arrow{flex:0 0 28px;}
+    .flow .arrow::before{content:"↓";}
+    .flow .node{text-align:left;padding:11px 13px;}
+    dl.glossary{grid-template-columns:1fr;}
+    .meta > div{grid-template-columns:1fr;gap:2px;}
+    .toc{border-radius:10px;}
+  }
+
+  /* ================= PRINT ================= */
+  @media print{
+    @page{margin:13mm 12mm;}
+    body{background:#fff;color:#000;font-size:10.5pt;line-height:1.4;}
+    .wrap{max-width:none;padding:0;}
+    .hero{
+      padding:0 0 10pt;
+      border:1.5pt solid #000;
+      border-radius:0;
+      background:#fff !important;
+      color:#000;
+      box-shadow:none;
+    }
+    .hero::after{display:none;}
+    .hero .badge-top,.hero-pills span{border:1pt solid #000;background:#fff;color:#000;}
+    .hero .sub{color:#000;}
+    .toc,.up{display:none !important;}
+    .card,.report,.table-wrap,.summary,.flow{
+      box-shadow:none !important;
+      break-inside:avoid;
+      page-break-inside:avoid;
+    }
+    .card{margin-bottom:10pt;border:1pt solid #999;}
+    .summary{background:#fff !important;color:#000;border:1.5pt solid #000;}
+    .summary h3{color:#000;}
+    .note,.warning,.fine,.deadline,.ausn,.osno{
+      background:#fff !important;
+      border:1pt solid #000;
+      border-left:3pt solid #000;
+    }
+    .flow{border:1pt solid #000;background:#fff !important;}
+    .flow .node{background:#fff !important;border:1pt solid #000;}
+    table{min-width:0;font-size:8.8pt;}
+    thead{display:table-header-group;}
+    a{color:#000;border-bottom:0;text-decoration:none;}
+    h1,h2,h3{color:#000;}
+  }
+</style>
+</head>
+<body id="top">
+
+<div class="wrap">
+
+  <!-- ================= HERO ================= -->
+  <header class="hero">
+    <span class="badge-top">Актуально на 06.11.2026</span>
+    <h1>Код ТН ВЭД и проверка запретов и ограничений: где искать</h1>
+    <p class="sub">Справка о бесплатных базах данных: официальные источники ЕЭК и ФТС, реестры разрешительных документов и сервисы-агрегаторы. С честной оценкой, чему можно верить, а что лишь подсказка.</p>
+    <div class="hero-pills">
+      <span>Официальное — ЕЭК и ФТС</span>
+      <span>Реестры — бесплатно</span>
+      <span>Агрегатор — не истина</span>
+    </div>
+  </header>
+
+  <!-- ================= TOC ================= -->
+  <nav class="toc" aria-label="Содержание">
+    <div class="toc-inner">
+      <a href="#princip">Главное</a>
+      <a href="#how">Как определять</a>
+      <a href="#codes">Базы по коду</a>
+      <a href="#compare">Официально vs агрегатор</a>
+      <a href="#measures">Запреты и ограничения</a>
+      <a href="#flow">Схема проверки</a>
+      <a href="#traps">Подводные камни</a>
+      <a href="#check">Чек-лист</a>
+      <a href="#gloss">Глоссарий</a>
+      <a href="#sources">Источники</a>
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- ================= 1 ================= -->
+    <section class="card" id="princip">
+      <span class="section-kicker">Сначала — главное</span>
+      <h2>Почему код решает больше, чем кажется</h2>
+      <p class="lead">Код ТН ВЭД — это не только ставка пошлины. От него зависят меры нетарифного регулирования, необходимость сертификатов и лицензий, запреты и ограничения. Ошибка в коде может превратить «обычный» товар в подконтрольный.</p>
+      <p>Поэтому порядок работы такой: сначала код, потом проверка мер, потом документы. Не наоборот. Если сначала оформить сертификат, а потом выяснить, что код другой, — документ может оказаться не применим к товару.</p>
+
+      <div class="legend">
+        <span><span class="tag tag-norm">Норма</span> официальный акт</span>
+        <span><span class="tag tag-fts">Позиция ФТС</span> разъяснения и реестры</span>
+        <span><span class="tag tag-prac">Практика</span> что бывает на деле</span>
+      </div>
+
+      <div class="osno">
+        <span class="box-title">Правило</span>
+        <strong>Официальный источник — ЕЭК и ФТС.</strong> Всё остальное — удобные навигаторы. Код, найденный по названию товара в интернете, не является основанием для декларирования и не защищает от корректировки.
+      </div>
+    </section>
+
+    <!-- ================= 2 ================= -->
+    <section class="card" id="how">
+      <span class="section-kicker">Методика</span>
+      <h2>Как определять код: алгоритм</h2>
+      <p class="lead">Код определяется не «по названию», а по тексту товарной позиции и примечаниям. Это юридическая операция, а не поиск по словарю.</p>
+
+      <ol class="steps">
+        <li>
+          <h3>Описать товар</h3>
+          <p class="human">Нужно понимать, что это за товар: материал, функция, принцип работы, комплектность, упаковка. «Насос» — это не описание, а «насос центробежный, для перекачки воды, мощность X» — уже ближе.</p>
+          <p class="exact">Определяющими являются объективные характеристики товара, зафиксированные в документах: состав, назначение, способ производства, комплектность. <span class="tag tag-norm">Норма</span></p>
+        </li>
+        <li>
+          <h3>Найти раздел и группу</h3>
+          <p class="human">Смотрите названия разделов, групп и примечания к ним. Примечания важнее названий: именно они часто исключают товар из группы.</p>
+          <p class="exact">Примечания к разделам и группам имеют приоритет при классификации. <span class="tag tag-norm">Норма</span></p>
+        </li>
+        <li>
+          <h3>Применить ОПИ</h3>
+          <p class="human">Основные правила интерпретации — это порядок действий при неоднозначности. Сначала текст позиции, потом неполные/несобранные товары, смеси, упаковка, и только затем подсубпозиции.</p>
+          <p class="exact">ОПИ 1–6 применяются последовательно; ОПИ 6 используется только после определения товарной позиции. <span class="tag tag-norm">Норма</span></p>
+        </li>
+        <li>
+          <h3>Свериться с пояснениями</h3>
+          <p class="human">Пояснения к ТН ВЭД — это официальный комментарий, который объясняет, что входит в позицию, а что нет. Самый полезный источник после самого текста номенклатуры.</p>
+          <p class="exact">Пояснения к ТН ВЭД ЕАЭС утверждены рекомендацией Коллегии ЕЭК и публикуются на сайте ЕЭК. <span class="tag tag-norm">Норма</span></p>
+        </li>
+        <li>
+          <h3>Проверить решения и практику</h3>
+          <p class="human">Если по похожему товару уже есть предварительное решение или решение о классификации — это сильный ориентир. Искать нужно по коду и по описанию.</p>
+          <p class="exact">Реестр действующих предварительных решений и сборники решений публикуются ФТС; решения о классификации отдельных товаров — на сайте ЕЭК. <span class="tag tag-fts">Позиция ФТС</span></p>
+        </li>
+        <li>
+          <h3>Если сомнения остались — предварительное решение</h3>
+          <p class="human">Это официальный ответ таможни: «этот товар классифицируется так». Он защищает от спора, но оформляется не мгновенно и не бесплатно.</p>
+          <p class="exact">Предварительное решение о классификации принимается таможенным органом по заявлению; срок действия и размер госпошлины сверь по действующей редакции. <span class="tag tag-norm">Норма</span> <span class="flag">ТРЕБУЕТ ПРОВЕРКИ: срок и госпошлина</span></p>
+        </li>
+      </ol>
+    </section>
+
+    <!-- ================= 3 ================= -->
+    <section class="card" id="codes">
+      <span class="section-kicker">Базы данных</span>
+      <h2>Где смотреть код: официальные источники</h2>
+      <p class="lead">Три базы закрывают почти все задачи. Они бесплатные и первоисточниковые.</p>
+
+      <article class="report">
+        <div class="report-head">
+          <span class="num green">1</span>
+          <div>
+            <h3>ЕЭК: ТН ВЭД ЕАЭС и пояснения</h3>
+            <p class="sub">Первоисточник номенклатуры</p>
+          </div>
+        </div>
+        <div class="tags"><span class="tag tag-norm">Официально</span><span class="tag tag-green">Бесплатно</span></div>
+        <p><strong>Что даёт:</strong> актуальный текст ТН ВЭД ЕАЭС по группам, ставки Единого таможенного тарифа и официальные пояснения к номенклатуре.</p>
+        <div class="meta">
+          <div><dt>Ссылки</dt><dd><a href="https://eec.eaeunion.org/comission/department/catr/ett/">ТН ВЭД и ЕТТ ЕАЭС</a> · <a href="https://eec.eaeunion.org/comission/department/catr/psn/">Пояснения к ТН ВЭД</a></dd></div>
+          <div><dt>Плюс</dt><dd>Единственный источник, на который можно ссылаться как на официальный текст</dd></div>
+          <div><dt>Минус</dt><dd>Неудобный поиск по описанию товара; нужно знать хотя бы группу</dd></div>
+        </div>
+      </article>
+
+      <article class="report">
+        <div class="report-head">
+          <span class="num">2</span>
+          <div>
+            <h3>ФТС: реестр предварительных решений</h3>
+            <p class="sub">Практика классификации по конкретным товарам</p>
+          </div>
+        </div>
+        <div class="tags"><span class="tag tag-fts">ФТС</span><span class="tag tag-green">Бесплатно</span></div>
+        <p><strong>Что даёт:</strong> действующие предварительные решения РФ о классификации, сборники решений и решения ЕЭК по отдельным товарам. Это лучший способ проверить, как таможня уже классифицировала похожий товар.</p>
+        <div class="meta">
+          <div><dt>Ссылки</dt><dd><a href="https://customs.gov.ru/uchastnikam-ved/informacziya-o-klassifikaczii-i-proisxozhdenii-tovara/dejstvuyushhie-predvaritel-nye-resheniya-o-klassifikaczii-tovarov">Действующие предварительные решения</a> · <a href="https://nsi.eaeunion.org/portal/1999">Сборник решений ЕАЭС</a></dd></div>
+          <div><dt>Плюс</dt><dd>Реальные формулировки товаров и готовые коды</dd></div>
+          <div><dt>Минус</dt><dd>Решения привязаны к конкретному описанию; «похожий» товар — не гарантия</dd></div>
+        </div>
+      </article>
+
+      <article class="report">
+        <div class="report-head">
+          <span class="num">3</span>
+          <div>
+            <h3>НСИ ЕАЭС</h3>
+            <p class="sub">Справочники и реестры в одном месте</p>
+          </div>
+        </div>
+        <div class="tags"><span class="tag tag-norm">Официально</span><span class="tag tag-green">Бесплатно</span></div>
+        <p><strong>Что даёт:</strong> единая нормативно-справочная информация Союза: классификаторы, сборники предварительных решений, реестр свидетельств о государственной регистрации и другие справочники.</p>
+        <div class="meta">
+          <div><dt>Ссылка</dt><dd><a href="https://nsi.eaeunion.org/">nsi.eaeunion.org</a></dd></div>
+          <div><dt>Плюс</dt><dd>Официальные данные без посредников</dd></div>
+          <div><dt>Минус</dt><dd>Интерфейс не заточен под быстрый поиск по товару</dd></div>
+        </div>
+      </article>
+
+      <h3>Дополнительные бесплатные ресурсы</h3>
+      <div class="table-wrap">
+        <table>
+          <caption>Чем можно пользоваться дополнительно — и в чём ограничение</caption>
+          <thead>
+            <tr><th>Ресурс</th><th>Что даёт</th><th>Статус</th><th>Ограничение</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><a href="https://www.alta.ru/tnved/">Альта-Софт: ТН ВЭД</a></td>
+              <td>Дерево кодов, ставки, меры нетарифного регулирования, база классификационных решений</td>
+              <td>Агрегатор</td>
+              <td>Может отставать от изменений; проверять по официальному тексту</td>
+            </tr>
+            <tr>
+              <td><a href="https://tnved.info/">tnved.info</a></td>
+              <td>Подбор кода по бытовому названию товара</td>
+              <td>Агрегатор</td>
+              <td>Только подсказка, не основание для декларирования</td>
+            </tr>
+            <tr>
+              <td><a href="https://www.tks.ru/db/tnved/tree">TKS</a></td>
+              <td>Классификатор ТН ВЭД и ставки</td>
+              <td>Агрегатор</td>
+              <td>Проверять актуальность редакции</td>
+            </tr>
+            <tr>
+              <td><a href="https://www.wcotradetools.org/en/harmonized-system">WCO Trade Tools</a></td>
+              <td>Гармонизированная система ВТО: тексты HS, пояснения</td>
+              <td>Официально (ВТО)</td>
+              <td>Только 6 знаков HS; часть материалов по подписке <span class="flag">ТРЕБУЕТ ПРОВЕРКИ</span></td>
+            </tr>
+            <tr>
+              <td>Access2Markets (ЕС)</td>
+              <td>Европейская номенклатура и меры</td>
+              <td>Официально (ЕС)</td>
+              <td>Не российская номенклатура; годится только для сверки на уровне 6 знаков</td>
+            </tr>
+            <tr>
+              <td><a href="https://ved.gov.ru/">Портал ВЭД Минэкономразвития</a></td>
+              <td>Тарифное и нетарифное регулирование, меры</td>
+              <td>Официально</td>
+              <td>Требует включённого JavaScript; часть разделов устаревает</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ================= 4 ================= -->
+    <section class="card" id="compare">
+      <span class="section-kicker">Важное различие</span>
+      <h2>Официальная база против агрегатора</h2>
+      <p class="lead">Это не «хорошо» и «плохо». Это разные инструменты с разной ответственностью.</p>
+
+      <div class="ausn">
+        <span class="box-title">Официальный источник</span>
+        Текст номенклатуры, пояснения, реестры решений и разрешительных документов. На него можно ссылаться в переписке с таможней и в суде. Минус — неудобный поиск.
+      </div>
+
+      <div class="osno">
+        <span class="box-title">Агрегатор</span>
+        Удобный поиск по названию, дерево кодов, ставки и меры «в одном окне». Экономит время на этапе подбора. Но если агрегатор не обновился после изменения номенклатуры, вы получите красивый, но неверный ответ.
+      </div>
+
+      <div class="warning">
+        <strong>Практическое правило.</strong> Агрегатор — чтобы найти кандидатов. Официальный текст и пояснения — чтобы подтвердить. Реестр решений — чтобы понять, как это уже трактовала таможня. Предварительное решение — если сумма сделки или риск спора большие.
+      </div>
+    </section>
+
+    <!-- ================= 5 ================= -->
+    <section class="card" id="measures">
+      <span class="section-kicker">Запреты и ограничения</span>
+      <h2>Где проверить, попадает ли товар под меры</h2>
+      <p class="lead">Проверка идёт по коду, но одного кода недостаточно: важно происхождение, направление сделки и назначение товара.</p>
+
+      <article class="report">
+        <div class="report-head">
+          <span class="num">1</span>
+          <div>
+            <h3>Решение Коллегии ЕЭК № 30</h3>
+            <p class="sub">Перечни товаров с разрешительным порядком</p>
+          </div>
+        </div>
+        <div class="tags"><span class="tag tag-norm">Норма</span><span class="tag tag-green">Бесплатно</span></div>
+        <p><strong>Что даёт:</strong> перечни товаров, в отношении которых установлен разрешительный порядок ввоза и (или) вывоза, с указанием меры и документа.</p>
+        <div class="meta">
+          <div><dt>Ссылка</dt><dd><a href="https://www.consultant.ru/document/cons_doc_LAW_178556/">consultant.ru</a> · <a href="https://eec.eaeunion.org/comission/department/catr/nontariff/30.php">eec.eaeunion.org</a></dd></div>
+          <div><dt>Как искать</dt><dd>По коду ТН ВЭД и по описанию товара в приложениях</dd></div>
+          <div><dt>Ограничение</dt><dd>Нужно проверить действующую редакцию: перечни меняются</dd></div>
+        </div>
+      </article>
+
+      <article class="report">
+        <div class="report-head">
+          <span class="num">2</span>
+          <div>
+            <h3>Раздел «Запреты и ограничения» на сайте ФТС</h3>
+            <p class="sub">Сводная навигация по мерам</p>
+          </div>
+        </div>
+        <div class="tags"><span class="tag tag-fts">ФТС</span><span class="tag tag-green">Бесплатно</span></div>
+        <p><strong>Что даёт:</strong> подборки по видам ограничений, специальным экономическим мерам, безопасности ввозимых товаров, контролю специфических товаров, а также ссылки на сервис «Разрешительные документы».</p>
+        <div class="meta">
+          <div><dt>Ссылка</dt><dd><a href="https://customs.gov.ru/uchastnikam-ved/zaprety-i-ogranicheniya">customs.gov.ru — запреты и ограничения</a></dd></div>
+          <div><dt>Плюс</dt><dd>Официальная позиция и актуальные подборки</dd></div>
+          <div><dt>Минус</dt><dd>Материал разбросан по подразделам, нужна навигация</dd></div>
+        </div>
+      </article>
+
+      <h3>Реестры для проверки документов и мер</h3>
+      <div class="table-wrap">
+        <table>
+          <caption>Все ресурсы бесплатные. Ссылки ведут на официальные реестры или их публичные части.</caption>
+          <thead>
+            <tr><th>Что проверяем</th><th>Где</th><th>Что увидим</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Сертификаты соответствия</td>
+              <td><a href="https://pub.fsa.gov.ru/rss/certificate">pub.fsa.gov.ru</a></td>
+              <td>Действующие и архивные сертификаты, орган, срок, продукцию</td>
+            </tr>
+            <tr>
+              <td>Декларации о соответствии</td>
+              <td><a href="https://pub.fsa.gov.ru/rds/declaration">pub.fsa.gov.ru</a></td>
+              <td>Регистрацию декларации, заявителя, продукцию, срок</td>
+            </tr>
+            <tr>
+              <td>Свидетельства о государственной регистрации</td>
+              <td><a href="https://nsi.eaeunion.org/portal/1995">nsi.eaeunion.org</a> · <a href="https://www.rospotrebnadzor.ru/deyatelnost/informatics/">Роспотребнадзор</a></td>
+              <td>Наличие СГР и зарегистрированные сведения о продукции</td>
+            </tr>
+            <tr>
+              <td>Лицензии Минпромторга</td>
+              <td><a href="https://minpromtorg.gov.ru/docs/list/">minpromtorg.gov.ru</a></td>
+              <td>Сведения о выданных лицензиях и разрешениях <span class="flag">ТРЕБУЕТ ПРОВЕРКИ: конкретный реестр и порядок поиска</span></td>
+            </tr>
+            <tr>
+              <td>Ветеринарные и фитосанитарные требования</td>
+              <td><a href="https://www.roselhoznadzor.gov.ru/">roselhoznadzor.gov.ru</a></td>
+              <td>Подконтрольные товары, требования, разрешения</td>
+            </tr>
+            <tr>
+              <td>Предварительные решения по классификации</td>
+              <td><a href="https://customs.gov.ru/uchastnikam-ved/informacziya-o-klassifikaczii-i-proisxozhdenii-tovara/dejstvuyushhie-predvaritel-nye-resheniya-o-klassifikaczii-tovarov">customs.gov.ru</a></td>
+              <td>Как таможня классифицировала аналогичный товар</td>
+            </tr>
+            <tr>
+              <td>Меры защиты внутреннего рынка</td>
+              <td>ЕЭК, раздел о специальных защитных, антидемпинговых и компенсационных мерах</td>
+              <td>Действующие меры и ставки <span class="flag">ТРЕБУЕТ ПРОВЕРКИ: актуальный раздел</span></td>
+            </tr>
+            <tr>
+              <td>Специальные экономические меры</td>
+              <td>Акты Правительства РФ, разъяснения ФТС и Минэкономразвития</td>
+              <td>Запреты и ограничения внешнеторговой направленности <span class="flag">ТРЕБУЕТ ПРОВЕРКИ: перечень актов меняется</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="note">
+        <span class="tag tag-prac">Практика</span> Проверка «по коду» не заменяет проверку «по товару». Один и тот же код может подпадать под меру только при определённом происхождении, содержании вещества или назначении. Всегда читайте не только строку перечня, но и примечания к ней.
+      </div>
+    </section>
+
+    <!-- ================= 6 ================= -->
+    <section class="card" id="flow">
+      <span class="section-kicker">Инфографика</span>
+      <h2>Схема проверки</h2>
+
+      <div class="flow" role="img" aria-label="Схема: описание товара, код ТН ВЭД, проверка мер, документы, декларирование">
+        <div class="node"><b>Товар</b><span>описание и характеристики</span></div>
+        <div class="arrow" aria-hidden="true"></div>
+        <div class="node"><b>Код</b><span>ТН ВЭД, 10 знаков</span></div>
+        <div class="arrow" aria-hidden="true"></div>
+        <div class="node hi"><b>Меры</b><span>перечни и реестры</span></div>
+        <div class="arrow" aria-hidden="true"></div>
+        <div class="node"><b>Документы</b><span>лицензия / сертификат / СГР</span></div>
+        <div class="arrow" aria-hidden="true"></div>
+        <div class="node"><b>Проверка</b><span>реестры, ЛК, решения</span></div>
+        <div class="arrow" aria-hidden="true"></div>
+        <div class="node hi"><b>ДТ</b><span>графа 44 и выпуск</span></div>
+      </div>
+      <p class="flow-caption">Если на этапе «меры» выяснилось, что нужен документ, — возвращайтесь к описанию товара и проверьте код ещё раз. Часто «неподконтрольный» товар становится подконтрольным именно из-за уточнения характеристик.</p>
+    </section>
+
+    <!-- ================= 7 ================= -->
+    <section class="card" id="traps">
+      <span class="section-kicker">Честно о ограничениях</span>
+      <h2>Подводные камни бесплатных баз</h2>
+
+      <div class="fine">
+        <span class="box-title">1 · Устаревшая редакция</span>
+        ТН ВЭД меняется почти каждый год. Агрегатор, который не обновился, покажет корректный код по старой редакции — и это будет ошибкой. Всегда сверяйте дату актуальности.
+      </div>
+
+      <div class="fine">
+        <span class="box-title">2 · 6 знаков против 10</span>
+        Международная HS — это 6 знаков. Для декларирования в ЕАЭС нужны 10. Совпадение на уровне 6 знаков не означает, что совпадут подсубпозиции и меры.
+      </div>
+
+      <div class="fine">
+        <span class="box-title">3 · Поиск по названию врёт</span>
+        «Код по названию товара» — это маркетинговый инструмент. Он не учитывает материал, функцию и примечания. Использовать его можно только для сужения поиска.
+      </div>
+
+      <div class="warning">
+        <span class="box-title">4 · Реестры не всегда полные</span>
+        В публичных реестрах бывают задержки публикации и неполные сведения. Отсутствие записи в реестре — повод проверить документ у держателя, а не автоматический вывод о подделке.
+      </div>
+
+      <div class="note">
+        <span class="box-title">5 · Ответственность на декларанте</span>
+        Код заявляет декларант. Если код неверен и это повлияло на платежи или на соблюдение запретов и ограничений, последствия — от корректировки и доначисления до административной ответственности.
+      </div>
+    </section>
+
+    <!-- ================= 8 ================= -->
+    <section class="card" id="check">
+      <span class="section-kicker">Практический инструмент</span>
+      <h2>Чек-лист</h2>
+      <ul class="checklist">
+        <li>Я описал товар по объективным характеристикам, а не одним словом?</li>
+        <li>Я проверил примечания к разделу и группе, а не только название позиции?</li>
+        <li>Я сверил код по официальному тексту ТН ВЭД ЕАЭС на сайте ЕЭК?</li>
+        <li>Я прочитал пояснения к товарной позиции?</li>
+        <li>Я проверил реестр предварительных решений по похожему товару?</li>
+        <li>Я проверил товар по перечням Решения № 30 и разделу «Запреты и ограничения» ФТС?</li>
+        <li>Я проверил, нужны ли сертификат, декларация или СГР, и есть ли они в реестрах?</li>
+        <li>Я понимаю, что ответственность за код и сведения лежит на декларанте?</li>
+        <li>При высокой сумме сделки или спорном товаре — я рассмотрел предварительное решение?</li>
+      </ul>
+    </section>
+
+    <!-- ================= 9 ================= -->
+    <section class="card" id="gloss">
+      <span class="section-kicker">Словарь</span>
+      <h2>Глоссарий</h2>
+      <dl class="glossary">
+        <div><dt>ТН ВЭД ЕАЭС</dt><dd>единая Товарная номенклатура внешнеэкономической деятельности Союза.</dd></div>
+        <div><dt>HS</dt><dd>Гармонизированная система описания и кодирования товаров ВТО (6 знаков).</dd></div>
+        <div><dt>ОПИ</dt><dd>Основные правила интерпретации ТН ВЭД.</dd></div>
+        <div><dt>Пояснения</dt><dd>официальный комментарий к товарным позициям и субпозициям.</dd></div>
+        <div><dt>Предварительное решение</dt><dd>официальное решение таможни о классификации конкретного товара.</dd></div>
+        <div><dt>Запреты и ограничения</dt><dd>меры, ограничивающие ввоз или вывоз товаров.</dd></div>
+        <div><dt>Меры нетарифного регулирования</dt><dd>лицензирование, квотирование и иные ограничения.</dd></div>
+        <div><dt>Реестр</dt><dd>официальная база сведений о документах, решениях или лицах.</dd></div>
+        <div><dt>Агрегатор</dt><dd>неофициальный сервис, собирающий данные из разных источников.</dd></div>
+        <div><dt>СГР</dt><dd>свидетельство о государственной регистрации продукции.</dd></div>
+        <div><dt>ФТС России</dt><dd>Федеральная таможенная служба.</dd></div>
+        <div><dt>ЕЭК</dt><dd>Евразийская экономическая комиссия.</dd></div>
+      </dl>
+    </section>
+
+    <!-- ================= 10 ================= -->
+    <section class="card" id="summary">
+      <span class="section-kicker">Итог</span>
+      <h2>Резюме</h2>
+      <div class="summary">
+        <h3>Семь тезисов для быстрого чтения</h3>
+        <ol>
+          <li>Код ТН ВЭД определяет не только пошлину, но и запреты, ограничения и необходимость документов.</li>
+          <li>Официальный текст номенклатуры и пояснения — только на сайте ЕЭК.</li>
+          <li>Как таможня классифицировала похожий товар — в реестре предварительных решений ФТС.</li>
+          <li>Агрегаторы удобны для поиска, но не являются основанием для декларирования.</li>
+          <li>Запреты и ограничения проверяются по Решению № 30 и разделу ФТС, а документы — по реестрам Росаккредитации, Роспотребнадзора и Минпромторга.</li>
+          <li>Одинаковый код не значит одинаковые меры: важны происхождение, назначение и характеристики.</li>
+          <li>При сомнениях и крупной сделке — предварительное решение о классификации.</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ================= 11 ================= -->
+    <section class="card sources" id="sources">
+      <span class="section-kicker">Первоисточники</span>
+      <h2>Источники</h2>
+
+      <article class="source">
+        <h3>Таможенный кодекс ЕАЭС</h3>
+        <p class="req">Глава 3 «Классификация товаров»: статья 20 (классификация), статья 21 (предварительные решения).</p>
+        <p><strong>Что подтверждает:</strong> правила классификации товаров и порядок принятия предварительных решений. <span class="tag tag-norm">Норма</span></p>
+        <p class="link"><a href="https://www.consultant.ru/document/cons_doc_LAW_215315/">consultant.ru — ТК ЕАЭС</a> · <a href="https://eec.eaeunion.org/comission/department/dep_tamoj_zak/tk_eaes.php">eec.eaeunion.org</a></p>
+      </article>
+
+      <article class="source">
+        <h3>ТН ВЭД ЕАЭС и Единый таможенный тариф</h3>
+        <p class="req">Официальный раздел на сайте Евразийской экономической комиссии.</p>
+        <p><strong>Что подтверждает:</strong> актуальный текст номенклатуры и ставки тарифа. <span class="tag tag-norm">Норма</span></p>
+        <p class="link"><a href="https://eec.eaeunion.org/comission/department/catr/ett/">eec.eaeunion.org — ТН ВЭД и ЕТТ</a></p>
+      </article>
+
+      <article class="source">
+        <h3>Пояснения к ТН ВЭД ЕАЭС</h3>
+        <p class="req">Рекомендация Коллегии ЕЭК; текст публикуется на сайте Комиссии.</p>
+        <p><strong>Что подтверждает:</strong> официальное толкование товарных позиций и субпозиций. <span class="tag tag-norm">Норма</span></p>
+        <p class="link"><a href="https://eec.eaeunion.org/comission/department/catr/psn/">eec.eaeunion.org — пояснения</a> · <a href="https://docs.cntd.ru/document/555625980/titles">docs.cntd.ru</a></p>
+      </article>
+
+      <article class="source">
+        <h3>Решение Коллегии ЕЭК от 21.04.2015 № 30 «О мерах нетарифного регулирования»</h3>
+        <p class="req">Перечни товаров, в отношении которых установлен разрешительный порядок ввоза и (или) вывоза.</p>
+        <p><strong>Что подтверждает:</strong> какие товары подпадают под лицензирование и разрешительный порядок. <span class="tag tag-norm">Норма</span></p>
+        <p class="link"><a href="https://www.consultant.ru/document/cons_doc_LAW_178556/">consultant.ru</a> · <a href="https://eec.eaeunion.org/comission/department/catr/nontariff/30.php">eec.eaeunion.org</a></p>
+      </article>
+
+      <article class="source">
+        <h3>Решение Комиссии Таможенного союза от 20.09.2010 № 378</h3>
+        <p class="req">Классификаторы, используемые для заполнения таможенных деклараций.</p>
+        <p><strong>Что подтверждает:</strong> коды видов документов для графы 44 ДТ. <span class="tag tag-norm">Норма</span></p>
+        <p class="link"><a href="https://www.consultant.ru/document/cons_doc_LAW_105110/">consultant.ru</a></p>
+      </article>
+
+      <article class="source">
+        <h3>Реестр предварительных решений о классификации товаров</h3>
+        <p class="req">Раздел «Классификация и происхождение товаров» на сайте ФТС; сборник решений — на портале НСИ ЕАЭС.</p>
+        <p><strong>Что подтверждает:</strong> практику классификации конкретных товаров таможенными органами. <span class="tag tag-fts">ФТС</span></p>
+        <p class="link"><a href="https://customs.gov.ru/uchastnikam-ved/informacziya-o-klassifikaczii-i-proisxozhdenii-tovara/dejstvuyushhie-predvaritel-nye-resheniya-o-klassifikaczii-tovarov">customs.gov.ru</a> · <a href="https://nsi.eaeunion.org/portal/1999">nsi.eaeunion.org</a></p>
+      </article>
+
+      <article class="source">
+        <h3>Раздел «Запреты и ограничения» на сайте ФТС</h3>
+        <p class="req">Подборки по видам ограничений, специальным экономическим мерам и контролю специфических товаров.</p>
+        <p><strong>Что подтверждает:</strong> официальную навигацию по действующим мерам. <span class="tag tag-fts">ФТС</span></p>
+        <p class="link"><a href="https://customs.gov.ru/uchastnikam-ved/zaprety-i-ogranicheniya">customs.gov.ru</a></p>
+      </article>
+
+      <article class="source">
+        <h3>Реестры Росаккредитации</h3>
+        <p class="req">Публичная часть ФГИС Росаккредитации: сертификаты соответствия и декларации о соответствии.</p>
+        <p><strong>Что подтверждает:</strong> наличие, действительность и содержание документов о соответствии. <span class="tag tag-norm">Норма</span></p>
+        <p class="link"><a href="https://pub.fsa.gov.ru/rss/certificate">сертификаты</a> · <a href="https://pub.fsa.gov.ru/rds/declaration">декларации</a> · <a href="https://fsa.gov.ru/use-of-technology/elektronnye-reestry/">реестры ФСА</a></p>
+      </article>
+
+      <article class="source">
+        <h3>Единый реестр свидетельств о государственной регистрации</h3>
+        <p class="req">Портал НСИ ЕАЭС и информационные системы Роспотребнадзора.</p>
+        <p><strong>Что подтверждает:</strong> наличие СГР и зарегистрированные сведения о продукции. <span class="tag tag-norm">Норма</span></p>
+        <p class="link"><a href="https://nsi.eaeunion.org/portal/1995">nsi.eaeunion.org</a> · <a href="https://www.rospotrebnadzor.ru/deyatelnost/informatics/">rospotrebnadzor.ru</a></p>
+      </article>
+
+      <article class="source">
+        <h3>Решение Совета ЕЭК от 24.11.2023 № 125</h3>
+        <p class="req">Правила выдачи лицензий и разрешений на экспорт и (или) импорт товаров.</p>
+        <p><strong>Что подтверждает:</strong> порядок оформления лицензий и разрешений, на которые ссылаются перечни Решения № 30. <span class="tag tag-norm">Норма</span></p>
+        <p class="link"><span class="flag">ТРЕБУЕТ ПРОВЕРКИ: полное название и действующая редакция</span></p>
+      </article>
+
+      <div class="actual">
+        <strong>Информация актуальна на 06.11.2026.</strong> ТН ВЭД и перечни мер меняются регулярно. Перед применением сверь действующую редакцию номенклатуры, Решения № 30 и наличие более поздних решений ЕЭК и разъяснений ФТС.
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    Справка подготовлена для личного использования участником ВЭД. Не является юридической консультацией. Код ТН ВЭД заявляет декларант, и ответственность за его достоверность лежит на нём.
+  </footer>
+
+</div>
+
+<a class="up" href="#top" aria-label="Наверх">↑</a>
+
+<style>
+.nav-back { position: fixed; bottom: 24px; right: 24px; background: #0d3b66; color: #fff !important; padding: 10px 16px; border-radius: 8px; text-decoration: none; font-family: "Segoe UI", Arial, sans-serif; font-size: 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 9999; transition: background 0.2s; font-weight: 600; }
+.nav-back:hover { background: #1e5a99; }
+</style>
+<a href="index.html" class="nav-back">← Назад в меню</a>
+</body>
+</html>

@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Вес брутто в ДТ: когда есть ответственность, а когда нет</title>
+<style>
+  :root{
+    --bg:#eef2f7;
+    --ink:#16202e;
+    --muted:#5b6779;
+    --line:#d5dee9;
+    --accent:#1f4e79;
+    --accent-2:#2f6b95;
+    --accent-soft:#eaf2f9;
+    --green:#1f6b3f;
+    --green-soft:#e9f6ee;
+    --red:#a8231b;
+    --red-soft:#fdf0ee;
+    --amber:#8a5a06;
+    --amber-soft:#fff7e3;
+    --radius:16px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font:16px/1.58 system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .wrap{max-width:960px;margin:0 auto;padding:0 18px 70px;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    margin:22px 0 0;
+    padding:38px 36px 34px;
+    border-radius:22px;
+    color:#fff;
+    background:linear-gradient(135deg,#0f2c44 0%,#1f4e79 55%,#32719b 100%);
+    box-shadow:0 16px 38px rgba(18,45,70,.22);
+    position:relative;
+    overflow:hidden;
+  }
+  .hero::after{
+    content:"";
+    position:absolute;
+    right:-90px;top:-90px;
+    width:280px;height:280px;
+    border-radius:50%;
+    background:radial-gradient(circle,rgba(255,255,255,.13),rgba(255,255,255,0) 70%);
+  }
+  .hero .badge-top{
+    display:inline-block;
+    background:rgba(255,255,255,.16);
+    border:1px solid rgba(255,255,255,.28);
+    border-radius:100px;
+    padding:5px 13px;
+    font-size:12px;
+    letter-spacing:.04em;
+    font-weight:600;
+  }
+  .hero h1{
+    margin:14px 0 10px;
+    font-size:32px;
+    line-height:1.2;
+    letter-spacing:-.015em;
+    max-width:760px;
+  }
+  .hero .sub{
+    margin:0;
+    font-size:16.5px;
+    line-height:1.5;
+    color:#dbe7f1;
+    max-width:720px;
+  }
+  .pills{
+    display:flex;
+    flex-wrap:wrap;
+    gap:9px;
+    margin-top:20px;
+  }
+  .pill{
+    background:rgba(255,255,255,.12);
+    border:1px solid rgba(255,255,255,.25);
+    border-radius:100px;
+    padding:7px 14px;
+    font-size:13.4px;
+    font-weight:600;
+  }
+
+  /* ---------- TOC ---------- */
+  .toc{
+    position:sticky;
+    top:0;
+    z-index:30;
+    margin:16px 0 26px;
+    background:rgba(255,255,255,.94);
+    backdrop-filter:blur(8px);
+    border:1px solid var(--line);
+    border-radius:14px;
+    box-shadow:0 6px 18px rgba(20,40,70,.07);
+  }
+  .toc-inner{
+    display:flex;
+    gap:4px;
+    overflow-x:auto;
+    padding:9px 10px;
+    scrollbar-width:thin;
+  }
+  .toc a{
+    flex:0 0 auto;
+    text-decoration:none;
+    color:#2b3b4f;
+    font-size:13.2px;
+    font-weight:600;
+    padding:6px 10px;
+    border-radius:8px;
+    white-space:nowrap;
+  }
+  .toc a:hover{background:var(--accent-soft);color:var(--accent);}
+
+  /* ---------- CARDS ---------- */
+  .card{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:24px 26px;
+    margin:0 0 20px;
+    box-shadow:0 2px 4px rgba(20,40,70,.04),0 10px 24px rgba(20,40,70,.05);
+    scroll-margin-top:78px;
+  }
+  .section-kicker{
+    font-size:11.5px;
+    font-weight:700;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--accent-2);
+    margin-bottom:6px;
+  }
+  .card h2{
+    margin:0 0 8px;
+    font-size:22px;
+    line-height:1.28;
+    letter-spacing:-.01em;
+  }
+  .card .lead{
+    margin:0 0 14px;
+    color:#38465a;
+    font-size:15.6px;
+  }
+
+  h3{font-size:16px;margin:18px 0 7px;line-height:1.35;}
+  p{margin:8px 0;}
+  ul,ol{margin:8px 0;padding-left:22px;}
+  li{margin:5px 0;}
+  a{color:var(--accent);text-decoration:none;border-bottom:1px solid #b9cfe2;word-break:break-word;}
+  a:hover{border-bottom-color:var(--accent);}
+
+  /* ---------- LEGEND ---------- */
+  .legend{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px 14px;
+    font-size:13px;
+    color:var(--muted);
+    margin:0 0 16px;
+  }
+  .tag{
+    display:inline-block;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    padding:3px 8px;
+    border-radius:5px;
+    border:1px solid transparent;
+  }
+  .tag-norm{background:#e8f0fb;color:#1f4e79;border-color:#c5d9ef;}
+  .tag-ks{background:#f0eafa;color:#5b2f86;border-color:#d9c9ee;}
+  .tag-fts{background:#e3f2f1;color:#0e5a5a;border-color:#b6dbd8;}
+  .tag-court{background:#fdf3e2;color:#7a4f06;border-color:#ecd3a6;}
+  .tag-red{background:var(--red-soft);color:var(--red);border-color:#e7bdb7;}
+  .tag-green{background:var(--green-soft);color:var(--green);border-color:#bfe0cc;}
+
+  /* ---------- BOXES ---------- */
+  .note,.warning,.fine,.deadline,.ausn,.osno,.summary{
+    border-radius:12px;
+    padding:14px 17px;
+    margin:14px 0;
+    font-size:14.6px;
+  }
+  .note{background:#f5f8fb;border:1px solid #dbe5ee;border-left:4px solid #8aa6c0;}
+  .warning{background:var(--amber-soft);border:1px solid #ecd9a8;border-left:5px solid #b8860b;}
+  .fine{background:var(--red-soft);border:1px solid #eccac5;border-left:5px solid var(--red);}
+  .deadline{background:var(--accent-soft);border:1px solid #c9dcef;border-left:5px solid var(--accent);}
+  .ausn{background:var(--green-soft);border:1px solid #c6e3d2;border-left:5px solid var(--green);}
+  .osno{background:#f2f6fc;border:1px solid #c8d9ee;border-left:5px solid #2c5f96;}
+  .summary{
+    background:linear-gradient(135deg,#173752,#1f4e79);
+    color:#eef5fb;
+    border:0;
+    padding:20px 22px;
+  }
+  .summary h3{color:#fff;margin-top:0;}
+  .summary ol{padding-left:20px;}
+  .summary li{margin:7px 0;}
+  .box-title{display:block;font-weight:700;font-size:13px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px;opacity:.9;}
+
+  /* ---------- REPORT CARDS ---------- */
+  .report{
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:16px 18px;
+    margin:14px 0;
+    background:#fcfdfe;
+    scroll-margin-top:78px;
+  }
+  .report-head{display:flex;gap:14px;align-items:flex-start;}
+  .num{
+    flex:0 0 42px;
+    width:42px;height:42px;
+    display:flex;align-items:center;justify-content:center;
+    border-radius:10px;
+    background:var(--accent);
+    color:#fff;
+    font-size:19px;
+    font-weight:800;
+    letter-spacing:-.02em;
+  }
+  .num.red{background:var(--red);}
+  .num.grey{background:#5d6c80;}
+  .num.amber{background:#a8741a;}
+  .report h3{margin:1px 0 2px;font-size:16.5px;}
+  .report .sub{margin:0;font-size:13.8px;color:var(--muted);}
+  .report .tags{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 8px;}
+  .meta{dorder:0;margin:0;}
+  .meta > div{
+    display:grid;
+    grid-template-columns:132px 1fr;
+    gap:10px;
+    padding:7px 0;
+    border-top:1px dotted var(--line);
+    font-size:14.2px;
+  }
+  .meta dt{font-weight:700;color:#2c3a4d;margin:0;}
+  .meta dd{margin:0;color:#33415a;}
+
+  /* ---------- QUOTE ---------- */
+  blockquote.quote{
+    margin:14px 0;
+    padding:16px 18px 16px 20px;
+    border-left:5px solid #6b4aa0;
+    background:#f7f4fc;
+    border-radius:0 12px 12px 0;
+    font-size:15.2px;
+    color:#2c2440;
+  }
+  blockquote.quote p{margin:0;}
+  blockquote.quote cite{
+    display:block;
+    margin-top:9px;
+    font-style:normal;
+    font-size:12.8px;
+    color:#665a80;
+  }
+
+  /* ---------- TABLES ---------- */
+  .table-wrap{
+    overflow-x:auto;
+    border-radius:12px;
+    margin:14px 0;
+    border:1px solid var(--line);
+  }
+  table{width:100%;border-collapse:collapse;font-size:14.2px;min-width:620px;background:#fff;}
+  caption{caption-side:top;text-align:left;font-size:12.8px;color:var(--muted);padding:8px 10px 6px;background:#f7f9fc;}
+  th,td{border-bottom:1px solid var(--line);border-right:1px solid var(--line);padding:9px 11px;text-align:left;vertical-align:top;}
+  th:last-child,td:last-child{border-right:0;}
+  tbody tr:last-child td{border-bottom:0;}
+  th{background:#eef4fa;font-size:13.3px;font-weight:700;}
+  tbody tr:nth-child(even) td{background:#fafbfd;}
+  .yes{color:var(--green);font-weight:700;}
+  .no{color:var(--red);font-weight:700;}
+  .mid{color:#8a5a06;font-weight:700;}
+
+  /* ---------- TRAFFIC LIGHT ---------- */
+  figure.traffic{
+    margin:16px 0 6px;
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:16px;
+    background:#fbfcfe;
+  }
+  figure.traffic figcaption{
+    font-size:12.8px;
+    color:var(--muted);
+    margin-bottom:12px;
+  }
+  .lights{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+  .light{
+    border-radius:12px;
+    padding:14px 14px 13px;
+    border:1px solid;
+    font-size:13.8px;
+    line-height:1.45;
+  }
+  .light b{display:block;font-size:14.6px;margin:6px 0 4px;}
+  .light p{margin:0;color:#3a4557;}
+  .light .dot{
+    display:inline-block;
+    width:15px;height:15px;border-radius:50%;
+  }
+  .light.green{background:var(--green-soft);border-color:#bfe0cc;}
+  .light.green .dot{background:#2e8b57;box-shadow:0 0 0 4px rgba(46,139,87,.15);}
+  .light.yellow{background:var(--amber-soft);border-color:#ecd9a8;}
+  .light.yellow .dot{background:#d9a11a;box-shadow:0 0 0 4px rgba(217,161,26,.16);}
+  .light.red{background:var(--red-soft);border-color:#eccac5;}
+  .light.red .dot{background:#c0392b;box-shadow:0 0 0 4px rgba(192,57,43,.14);}
+
+  /* ---------- TIMELINE ---------- */
+  .timeline{
+    list-style:none;
+    margin:16px 0 4px;
+    padding:0 0 0 26px;
+    border-left:2px solid #c4d4e4;
+  }
+  .timeline li{
+    position:relative;
+    padding:0 0 20px 18px;
+    margin:0;
+  }
+  .timeline li:last-child{padding-bottom:0;}
+  .timeline li::before{
+    content:"";
+    position:absolute;
+    left:-35px;top:4px;
+    width:14px;height:14px;
+    border-radius:50%;
+    background:#fff;
+    border:3px solid var(--accent);
+  }
+  .timeline b{display:block;font-size:15px;margin-bottom:2px;}
+  .timeline span{font-size:14.2px;color:#3c4a5e;}
+
+  /* ---------- CORR ---------- */
+  .corr{
+    border:1px solid #e3d3b3;
+    background:#fffdf7;
+    border-radius:14px;
+    padding:18px 20px;
+    margin:14px 0;
+  }
+  .corr-item{
+    padding:10px 0;
+    border-top:1px dotted #e0d3ba;
+    font-size:14.3px;
+  }
+  .corr-item:first-of-type{border-top:0;}
+  .corr-item .wrong{color:var(--red);text-decoration:line-through;text-decoration-thickness:1px;}
+  .corr-item .right{color:#1d4e33;font-weight:600;}
+
+  /* ---------- CHECKLIST ---------- */
+  .checklist{list-style:none;padding-left:0;margin:10px 0;}
+  .checklist li{position:relative;padding-left:32px;margin:9px 0;}
+  .checklist li::before{
+    content:"☐";
+    position:absolute;left:0;top:-1px;
+    font-size:19px;color:var(--accent);
+  }
+
+  /* ---------- GLOSSARY ---------- */
+  dl.glossary{display:grid;grid-template-columns:1fr 1fr;gap:0 28px;margin:12px 0;}
+  dl.glossary > div{padding:8px 0;border-bottom:1px dotted var(--line);}
+  dl.glossary dt{font-weight:700;font-size:14.4px;}
+  dl.glossary dd{margin:2px 0 0;font-size:14px;color:#3a465c;}
+
+  /* ---------- SOURCES ---------- */
+  .sources .source{
+    border-left:3px solid #c3d3e2;
+    padding:4px 0 4px 14px;
+    margin:16px 0;
+  }
+  .sources .source h3{margin:0 0 3px;font-size:15px;}
+  .sources .req{font-size:12.8px;color:var(--muted);margin:0 0 5px;}
+  .sources .source p{margin:5px 0;font-size:14.2px;}
+  .sources .link{font-size:12.9px;}
+  .actual{
+    margin-top:18px;
+    padding:11px 14px;
+    background:#f2f6fa;
+    border:1px dashed #c3d3e2;
+    border-radius:10px;
+    font-size:13.4px;
+    color:#3d4b60;
+  }
+
+  .flag{
+    display:inline-block;
+    background:var(--amber-soft);
+    color:#6d4f00;
+    border-radius:3px;
+    padding:0 5px;
+    font-size:11.5px;
+    font-weight:700;
+    white-space:nowrap;
+  }
+
+  footer{
+    margin-top:26px;
+    padding-top:14px;
+    border-top:1px solid var(--line);
+    font-size:12.7px;
+    color:var(--muted);
+    line-height:1.5;
+  }
+
+  /* ---------- UP ---------- */
+  .up{
+    position:fixed;
+    right:20px;
+    bottom:20px;
+    width:46px;height:46px;
+    display:flex;align-items:center;justify-content:center;
+    border-radius:50%;
+    background:var(--accent);
+    color:#fff;
+    font-size:19px;
+    text-decoration:none;
+    border:0;
+    box-shadow:0 8px 20px rgba(20,50,80,.28);
+    z-index:40;
+  }
+  .up:hover{background:#163b5c;}
+
+  /* ---------- ADAPTIVE ---------- */
+  @media (max-width:800px){
+    .hero{padding:28px 22px 26px;border-radius:18px;}
+    .hero h1{font-size:25px;}
+    .hero .sub{font-size:15.3px;}
+    .card{padding:20px 18px;}
+    .lights{grid-template-columns:1fr;}
+    dl.glossary{grid-template-columns:1fr;}
+    .meta > div{grid-template-columns:1fr;gap:2px;}
+    .toc{border-radius:10px;}
+  }
+
+  /* ---------- PRINT ---------- */
+  @media print{
+    @page{margin:13mm 12mm;}
+    body{background:#fff;font-size:10.5pt;line-height:1.4;color:#000;}
+    .wrap{max-width:none;padding:0;}
+    .hero{
+      background:#fff !important;
+      color:#000;
+      box-shadow:none;
+      border:1.5pt solid #000;
+      border-radius:0;
+      padding:0 0 10pt;
+    }
+    .hero::after{display:none;}
+    .hero .badge-top,.pill{border:1pt solid #000;background:#fff;color:#000;}
+    .hero .sub{color:#000;}
+    .toc,.up{display:none !important;}
+    .card,.report,figure.traffic,.table-wrap,.corr,.summary{
+      box-shadow:none !important;
+      break-inside:avoid;
+      page-break-inside:avoid;
+    }
+    .card{border:1pt solid #999;margin-bottom:10pt;}
+    .summary{background:#fff !important;color:#000;border:1.5pt solid #000;}
+    .summary h3{color:#000;}
+    .note,.warning,.fine,.deadline,.ausn,.osno{
+      background:#fff !important;
+      border:1pt solid #000;
+      border-left:3pt solid #000;
+    }
+    table{min-width:0;font-size:9pt;}
+    thead{display:table-header-group;}
+    a{color:#000;border-bottom:0;text-decoration:none;}
+    h1,h2,h3{color:#000;}
+  }
+</style>
+</head>
+<body id="top">
+
+<div class="wrap">
+
+  <!-- HERO -->
+  <header class="hero">
+    <span class="badge-top">Актуально на 06.11.2026</span>
+    <h1>Вес брутто в декларации: когда ответственность есть, а когда её нет</h1>
+    <p class="sub">Расхождение веса — это всегда формальная ошибка в декларации. Но административная ответственность по ч. 2 ст. 16.2 КоАП РФ наступает не за сам факт расхождения, а за его последствия для платежей. Разбираем развилку.</p>
+    <div class="pills">
+      <span class="pill">Вес ≠ автоматически штраф</span>
+      <span class="pill">Нужен платёжный эффект</span>
+      <span class="pill">Ст. 16.1 и 16.2 — разные составы</span>
+    </div>
+  </header>
+
+  <!-- TOC -->
+  <nav class="toc" aria-label="Содержание">
+    <div class="toc-inner">
+      <a href="#princip">Главное</a>
+      <a href="#norma">Что говорит норма</a>
+      <a href="#ks">Позиция КС РФ</a>
+      <a href="#sostavy">Составы</a>
+      <a href="#razlichie">16.1 vs 16.2</a>
+      <a href="#primery">Примеры</a>
+      <a href="#risk">Риск</a>
+      <a href="#tablica">Ситуации</a>
+      <a href="#timeline">Порядок действий</a>
+      <a href="#oshibki">Ошибки</a>
+      <a href="#checklist">Чек-лист</a>
+      <a href="#corr">Исправления</a>
+      <a href="#gloss">Глоссарий</a>
+      <a href="#summary">Резюме</a>
+      <a href="#sources">Источники</a>
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- 1 -->
+    <section class="card" id="princip">
+      <div class="section-kicker">Сначала — главное</div>
+      <h2>О чём вообще спор</h2>
+      <p class="lead">В декларации на товары указывается вес брутто — масса товара вместе с упаковкой. Если он не совпал с фактическим, таможня видит недостоверные сведения. Дальше всё зависит от одного вопроса: <strong>изменились ли из-за этого таможенные платежи</strong>.</p>
+
+      <div class="legend">
+        <span><span class="tag tag-norm">Норма</span> закон и кодекс</span>
+        <span><span class="tag tag-ks">КС РФ</span> конституционно-правовая позиция</span>
+        <span><span class="tag tag-fts">ФТС</span> разъяснения службы</span>
+        <span><span class="tag tag-court">Суды</span> правоприменительная практика</span>
+      </div>
+
+      <div class="osno">
+        <span class="box-title">Формула, которую достаточно запомнить</span>
+        Недостоверный вес брутто сам по себе — <strong>нарушение правил декларирования</strong>. Но ответственность по ч. 2 ст. 16.2 КоАП РФ появляется только тогда, когда недостоверность <strong>послужила или могла послужить</strong> основанием для освобождения от уплаты платежей или для их занижения.
+      </div>
+
+      <figure class="traffic">
+        <figcaption>Светофор: три исхода одной и той же ошибки в весе</figcaption>
+        <div class="lights">
+          <div class="light green">
+            <span class="dot"></span>
+            <b>Платежи не изменились</b>
+            <p>Вес нетто и стоимость верные, ставка адвалорная. Состава по ч. 2 ст. 16.2 нет. Но декларацию всё равно придётся привести в соответствие.</p>
+          </div>
+          <div class="light yellow">
+            <span class="dot"></span>
+            <b>Спор о последствиях</b>
+            <p>Вес влияет на расчёт косвенно: специфическая ставка, распределение по товарам, льгота. Исход зависит от расчёта и доказательств.</p>
+          </div>
+          <div class="light red">
+            <span class="dot"></span>
+            <b>Платежи занижены</b>
+            <p>Вес — база для пошлины, и сумма реально уменьшилась. Это ч. 2 ст. 16.2: штраф, кратный сумме платежей.</p>
+          </div>
+        </div>
+      </figure>
+
+      <div class="note">
+        <strong>Важно не путать три вещи:</strong> (1) обязанность указать точный вес, (2) право таможни потребовать исправлений, (3) административную ответственность. Первые две есть почти всегда, третья — нет.
+      </div>
+    </section>
+
+    <!-- 2 -->
+    <section class="card" id="norma">
+      <div class="section-kicker">Уровень 1 · норма</div>
+      <h2>Что требует закон</h2>
+      <p class="lead">Вес брутто — не «справочная» величина, а обязательное сведение декларации. Но требование указать его и ответственность за ошибку регулируются разными актами.</p>
+
+      <h3>Сведения в декларации</h3>
+      <p><span class="tag tag-norm">Норма</span> Пункт 1 статьи 106 ТК ЕАЭС устанавливает перечень сведений, подлежащих указанию в декларации на товары. Среди них — сведения о товаре, включая его количество, в том числе вес брутто и вес нетто.</p>
+
+      <h3>Обязанность декларанта</h3>
+      <p><span class="tag tag-norm">Норма</span> Подпункт 1 пункта 1 статьи 84 ТК ЕАЭС закрепляет обязанность декларанта произвести таможенное декларирование товаров. Ответственность за достоверность заявленных сведений лежит на том, кто подаёт декларацию, — то есть на декларанте (или таможенном представителе по поручению).</p>
+
+      <h3>Три части статьи 16.2 — это три разных состава</h3>
+      <ul>
+        <li><strong>ч. 1</strong> — товар вообще не заявлен в декларации (недекларирование). К ошибке в весе обычно не относится.</li>
+        <li><strong>ч. 2</strong> — в декларации заявлены недостоверные сведения, и это <em>послужило или могло послужить</em> основанием для освобождения от уплаты платежей или для их занижения.</li>
+        <li><strong>ч. 3</strong> — недостоверные сведения привели к несоблюдению запретов и ограничений (лицензии, сертификаты, квоты и т.п.).</li>
+      </ul>
+
+      <div class="warning">
+        <span class="box-title">Ключевая формулировка ч. 2</span>
+        «…если такие сведения послужили или могли послужить основанием для освобождения от уплаты таможенных пошлин, налогов или для занижения их размера». Именно эта связка — «послужили или могли послужить» — и стала предметом разбора в Конституционном Суде.
+      </div>
+    </section>
+
+    <!-- 3 -->
+    <section class="card" id="ks">
+      <div class="section-kicker">Уровень 2 · позиция КС РФ</div>
+      <h2>Постановление КС РФ от 05.03.2024 № 9-П</h2>
+      <p class="lead">Конституционный Суд разбирал ситуацию, когда в декларации был занижен вес брутто, но стоимость товара и вес нетто были указаны верно, а платежи уплачены в полном объёме.</p>
+
+      <blockquote class="quote">
+        <p>«Часть 2 статьи 16.2 КоАП Российской Федерации не предполагает привлечение к административной ответственности за указание в декларации на товары недостоверных сведений о весе брутто товаров, если такие сведения не послужили и не могли послужить основанием для освобождения от уплаты таможенных пошлин, налогов или для занижения их размера».</p>
+        <cite>Постановление КС РФ от 05.03.2024 № 9-П · <span class="flag">ТРЕБУЕТ ПРОВЕРКИ: дословность цитаты сверь по официальному тексту на ksrf.ru</span></cite>
+      </blockquote>
+
+      <h3>Что это значит на практике</h3>
+      <ul>
+        <li><strong>Сам факт расхождения веса не наказуем по ч. 2 ст. 16.2.</strong> Нужен платёжный эффект: освобождение от уплаты или занижение.</li>
+        <li><strong>«Могло послужить» — не абстрактная формула.</strong> Должна быть реальная возможность влияния на расчёт, а не теоретическая.</li>
+        <li><strong>Нарушение не исчезло.</strong> КС сказал, что за него нельзя наказывать по ч. 2, но не сказал, что сведения верны. Декларацию всё равно нужно исправить, а таможня вправе этого требовать.</li>
+        <li><strong>Другие составы не исключены.</strong> Если ошибка в весе привела к несоблюдению запретов и ограничений — возможна ч. 3 ст. 16.2; если речь о весе при прибытии — ст. 16.1.</li>
+      </ul>
+
+      <div class="ausn">
+        <span class="box-title">Когда ответственности по ч. 2 нет</span>
+        Вес занижен или завышен, но: стоимость товара определена по цене сделки, ставка пошлины адвалорная (в процентах от стоимости), вес нетто верный, платежи рассчитаны и уплачены правильно. Последствий нет — состава нет.
+      </div>
+
+      <div class="osno">
+        <span class="box-title">Когда ответственность есть</span>
+        Вес — часть базы обложения (специфическая ставка «за килограмм»), либо вес влияет на таможенную стоимость, распределение платежей по товарам, применение льготы или тарифной преференции. Тогда занижение веса уменьшает платежи — и работает ч. 2 ст. 16.2.
+      </div>
+    </section>
+
+    <!-- 4 -->
+    <section class="card" id="sostavy">
+      <div class="section-kicker">Разбор по составам</div>
+      <h2>Какой статьёй что охватывается</h2>
+      <p class="lead">Ниже — четыре состава, которые чаще всего путают. Обрати внимание: у них разные субъекты и разные события.</p>
+
+      <article class="report">
+        <div class="report-head">
+          <span class="num grey">1</span>
+          <div>
+            <h3>Часть 1 статьи 16.2 КоАП РФ</h3>
+            <p class="sub">Недекларирование товаров</p>
+          </div>
+        </div>
+        <div class="tags">
+          <span class="tag tag-norm">Норма</span>
+          <span class="tag">Декларант</span>
+          <span class="tag tag-red">Товар не заявлен</span>
+        </div>
+        <dl class="meta">
+          <div><dt>Норма</dt><dd>Недекларирование по установленной форме товаров, подлежащих таможенному декларированию.</dd></div>
+          <div><dt>Санкция</dt><dd>Штраф, исчисляемый от стоимости товаров, либо конфискация. Размер — по действующей редакции КоАП.</dd></div>
+          <div><dt>Когда применяется</dt><dd>Товар вообще не указан в декларации или заявлен не полностью. Ошибка только в весе брутто при заявленном товаре сюда, как правило, не попадает.</dd></div>
+        </dl>
+      </article>
+
+      <article class="report">
+        <div class="report-head">
+          <span class="num red">2</span>
+          <div>
+            <h3>Часть 2 статьи 16.2 КоАП РФ</h3>
+            <p class="sub">Недостоверные сведения, повлиявшие на платежи</p>
+          </div>
+        </div>
+        <div class="tags">
+          <span class="tag tag-norm">Норма</span>
+          <span class="tag tag-ks">КС РФ</span>
+          <span class="tag tag-red">Платёжный эффект</span>
+        </div>
+        <dl class="meta">
+          <div><dt>Норма</dt><dd>Заявление недостоверных сведений о наименовании, описании, коде ТН ВЭД, стране происхождения, количестве, свойствах, таможенной стоимости или иных сведениях, если это послужило или могло послужить основанием для освобождения от уплаты платежей или для их занижения.</dd></div>
+          <div><dt>Санкция</dt><dd>Штраф, кратный сумме подлежащих уплате таможенных пошлин и налогов; для организаций — в диапазоне от половины до двукратной суммы. Точные размеры — по действующей редакции.</dd></div>
+          <div><dt>Когда применяется</dt><dd>Ошибка в весе реально уменьшила платежи либо создала такую возможность. При отсутствии платёжного эффекта состав не образуется (позиция КС РФ).</dd></div>
+        </dl>
+      </article>
+
+      <article class="report">
+        <div class="report-head">
+          <span class="num">3</span>
+          <div>
+            <h3>Часть 3 статьи 16.2 КоАП РФ</h3>
+            <p class="sub">Недостоверные сведения и запреты/ограничения</p>
+          </div>
+        </div>
+        <div class="tags">
+          <span class="tag tag-norm">Норма</span>
+          <span class="tag">Декларант</span>
+          <span class="tag tag-red">Запреты и ограничения</span>
+        </div>
+        <dl class="meta">
+          <div><dt>Норма</dt><dd>Недостоверные сведения о товарах, если это послужило основанием для несоблюдения запретов и ограничений, установленных правом ЕАЭС и законодательством РФ.</dd></div>
+          <div><dt>Санкция</dt><dd>Фиксированный штраф, размер зависит от категории лица. Точные суммы — по действующей редакции.</dd></div>
+          <div><dt>Когда применяется</dt><dd>Ошибка привела к обходу лицензирования, квотирования, сертификации и аналогичных требований. Вес сам по себе — редко, но возможны ситуации, где вес привязан к ограничению.</dd></div>
+        </dl>
+      </article>
+
+      <article class="report">
+        <div class="report-head">
+          <span class="num amber">16.1</span>
+          <div>
+            <h3>Часть 3 статьи 16.1 КоАП РФ</h3>
+            <p class="sub">Недостоверный вес при прибытии или убытии</p>
+          </div>
+        </div>
+        <div class="tags">
+          <span class="tag tag-norm">Норма</span>
+          <span class="tag">Перевозчик</span>
+          <span class="tag">Не декларант</span>
+        </div>
+        <dl class="meta">
+          <div><dt>Норма</dt><dd>Сообщение таможенному органу недостоверных сведений о количестве грузовых мест, маркировке, наименовании, весе брутто и (или) объёме товаров при прибытии на таможенную территорию Союза либо при убытии.</dd></div>
+          <div><dt>Санкция</dt><dd>Штраф; размер зависит от категории лица. Точные суммы — по действующей редакции.</dd></div>
+          <div><dt>Когда применяется</dt><dd>Расхождение выявлено на этапе ввоза/вывоза, по документам перевозчика, до подачи декларации. Это не «недостоверное декларирование» и не ч. 2 ст. 16.2.</dd></div>
+        </dl>
+      </article>
+
+      <div class="note">
+        <strong>Почему это важно.</strong> Если таможня квалифицировала расхождение веса по ст. 16.1, а вы готовите защиту по правилам ст. 16.2 (или наоборот), спор проигран ещё до разбора фактов: другой состав, другой субъект, другой набор доказывания.
+      </div>
+    </section>
+
+    <!-- 5 -->
+    <section class="card" id="razlichie">
+      <div class="section-kicker">Сравнение</div>
+      <h2>Статья 16.1 против статьи 16.2</h2>
+      <p class="lead">Обе статьи могут касаться веса брутто. Но это разные события и разные ответственные лица.</p>
+
+      <div class="table-wrap">
+        <table>
+          <caption>Ключевые различия составов</caption>
+          <thead>
+            <tr>
+              <th>Критерий</th>
+              <th>Ч. 3 ст. 16.1 КоАП РФ</th>
+              <th>Ч. 2 ст. 16.2 КоАП РФ</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Событие</td><td>Прибытие или убытие товара</td><td>Таможенное декларирование</td></tr>
+            <tr><td>Документ</td><td>Транспортные и сопроводительные документы</td><td>Декларация на товары</td></tr>
+            <tr><td>Кто отвечает</td><td>Перевозчик</td><td>Декларант или таможенный представитель</td></tr>
+            <tr><td>Что проверяют</td><td>Соответствие сведений фактическому грузу</td><td>Влияние недостоверных сведений на платежи</td></tr>
+            <tr><td>Роль последствий</td><td class="mid">Не требуется платёжный эффект</td><td class="no">Обязателен платёжный эффект или его реальная возможность</td></tr>
+            <tr><td>Типичная ошибка</td><td>Вес в накладной не совпал с фактическим</td><td>Вес в ДТ занижен так, что уменьшилась пошлина</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 6 -->
+    <section class="card" id="primery">
+      <div class="section-kicker">Практика на цифрах</div>
+      <h2>Три простых примера</h2>
+      <p class="lead">Цифры условные, но логика расчёта реальная. Смотри не на суммы, а на то, меняется ли база обложения.</p>
+
+      <article class="report">
+        <div class="report-head">
+          <span class="num grey">1</span>
+          <div>
+            <h3>Вес занижен, платежи не изменились</h3>
+            <p class="sub">Адвалорная ставка — пошлина считается от стоимости</p>
+          </div>
+        </div>
+        <div class="tags"><span class="tag tag-green">Ответственности по ч. 2 нет</span></div>
+        <p>Товар: 1 000 кг брутто фактически, в ДТ указано 980 кг. Вес нетто — 950 кг — верный. Стоимость — 1 000 000 ₽, ставка пошлины 10 % от стоимости.</p>
+        <p><strong>Расчёт:</strong> пошлина = 1 000 000 × 10 % = 100 000 ₽. Вес в расчёте не участвует, поэтому 100 000 ₽ и до, и после уточнения веса.</p>
+        <div class="ausn"><strong>Итог:</strong> занижения платежей нет, состава по ч. 2 ст. 16.2 нет. Но сведения в ДТ недостоверны — декларацию нужно скорректировать.</div>
+      </article>
+
+      <article class="report">
+        <div class="report-head">
+          <span class="num red">2</span>
+          <div>
+            <h3>Вес занижен, платежи занижены</h3>
+            <p class="sub">Специфическая ставка — пошлина считается за килограмм</p>
+          </div>
+        </div>
+        <div class="tags"><span class="tag tag-red">Есть ответственность по ч. 2</span></div>
+        <p>Товар: фактический вес 1 000 кг, в ДТ указано 900 кг. Ставка — 100 ₽ за 1 кг.</p>
+        <p><strong>Расчёт:</strong> должно быть 1 000 × 100 = 100 000 ₽, уплачено 900 × 100 = 90 000 ₽. Недоплата — 10 000 ₽.</p>
+        <div class="osno"><strong>Итог:</strong> недостоверные сведения прямо уменьшили платёж. Это ч. 2 ст. 16.2: штраф кратен сумме платежей, плюс доплата.</div>
+      </article>
+
+      <article class="report">
+        <div class="report-head">
+          <span class="num amber">3</span>
+          <div>
+            <h3>Расхождение при прибытии</h3>
+            <p class="sub">Ещё нет декларации — есть документы перевозчика</p>
+          </div>
+        </div>
+        <div class="tags"><span class="tag tag-norm">Ст. 16.1, не 16.2</span></div>
+        <p>В порту перевозчик подал документы, где вес груза — 1 000 кг. При досмотре фактически оказалось 1 200 кг. Декларация ещё не подавалась.</p>
+        <div class="note"><strong>Итог:</strong> это ч. 3 ст. 16.1 КоАП РФ — недостоверные сведения при прибытии. Субъект — перевозчик. К декларанту и к ст. 16.2 это отношения не имеет.</div>
+      </article>
+    </section>
+
+    <!-- 7 -->
+    <section class="card" id="risk">
+      <div class="section-kicker">Честно о рисках</div>
+      <h2>В чём риск на самом деле</h2>
+      <p class="lead">Позиция КС РФ сужает ответственность, но не отменяет проблему. Вот что остаётся даже при «безобидном» расхождении.</p>
+
+      <div class="fine">
+        <span class="box-title">Риск 1 · отказ в выпуске</span>
+        Пока сведения в декларации не приведены в соответствие, таможня может не выпустить товар. Это не штраф, но простой, хранение и срыв сроков поставки. Формально «ненаказуемое» расхождение может стоить дороже штрафа.
+      </div>
+
+      <div class="fine">
+        <span class="box-title">Риск 2 · «вес меньше» не всегда спасает</span>
+        Если платежи перераспределились между товарами, общая сумма по декларации может не измениться — а по конкретному товару занижение будет. Таможня считает не только итог, но и каждую позицию.
+      </div>
+
+      <div class="fine">
+        <span class="box-title">Риск 3 · бремя точности на декларанте</span>
+        Подпункт 1 пункта 1 статьи 84 ТК ЕАЭС и пункт 1 статьи 106 ТК ЕАЭС возлагают декларирование и достоверность сведений на декларанта. Ссылка «мне дали неверные данные» сама по себе не освобождает от ответственности.
+      </div>
+
+      <div class="warning">
+        <strong>Отдельно:</strong> чем «удобнее» ошибка для таможни, тем внимательнее она проверяется. Систематическое занижение веса по одному товару выглядит как схема, а не как опечатка, и повышает риск углублённой проверки и переквалификации.
+      </div>
+    </section>
+
+    <!-- 8 -->
+    <section class="card" id="tablica">
+      <div class="section-kicker">Сводка</div>
+      <h2>Ситуация → последствия → ответственность</h2>
+      <div class="table-wrap">
+        <table>
+          <caption>Быстрый ориентир. Итог зависит от конкретных документов и расчёта.</caption>
+          <thead>
+            <tr><th>Ситуация</th><th>Последствия для платежей</th><th>Ответственность</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Занижен вес брутто, вес нетто и стоимость верные, ставка адвалорная</td>
+              <td>Нет</td>
+              <td><span class="yes">Нет по ч. 2 ст. 16.2</span><br><small>нужна корректировка ДТ</small></td>
+            </tr>
+            <tr>
+              <td>Завышен вес брутто, платежи не уменьшились</td>
+              <td>Нет (возможна переплата)</td>
+              <td><span class="yes">Нет по ч. 2 ст. 16.2</span><br><small>корректировка ДТ</small></td>
+            </tr>
+            <tr>
+              <td>Занижен вес при специфической ставке «за кг»</td>
+              <td>Платежи занижены</td>
+              <td><span class="no">Ч. 2 ст. 16.2</span></td>
+            </tr>
+            <tr>
+              <td>Вес влияет на применение льготы или преференции</td>
+              <td>Платежи занижены или получено освобождение</td>
+              <td><span class="no">Ч. 2 ст. 16.2</span></td>
+            </tr>
+            <tr>
+              <td>Платежи перераспределились по товарам, итог тот же</td>
+              <td>По конкретному товару — занижение</td>
+              <td><span class="mid">Спорно, зависит от расчёта</span></td>
+            </tr>
+            <tr>
+              <td>Расхождение выявлено при прибытии, декларации ещё нет</td>
+              <td>К платежам не относится</td>
+              <td><span class="no">Ч. 3 ст. 16.1</span><br><small>субъект — перевозчик</small></td>
+            </tr>
+            <tr>
+              <td>Недостоверный вес привёл к обходу запретов и ограничений</td>
+              <td>Может не быть</td>
+              <td><span class="no">Ч. 3 ст. 16.2</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 9 -->
+    <section class="card" id="timeline">
+      <div class="section-kicker">Порядок действий</div>
+      <h2>Что происходит после обнаружения расхождения</h2>
+
+      <ol class="timeline">
+        <li>
+          <b>Обнаружение</b>
+          <span>Расхождение выявляет таможня при досмотре, проверке документов или после выпуска — либо сам декларант при сверке.</span>
+        </li>
+        <li>
+          <b>Оценка последствий</b>
+          <span>Ключевой шаг: считается ли платёж по весу? Изменилась ли сумма пошлины и НДС? Есть ли льгота, зависящая от веса? Меняются ли платежи по конкретному товару?</span>
+        </li>
+        <li>
+          <b>Корректировка декларации</b>
+          <span>Сведения приводятся в соответствие: подаётся корректировка ДТ, при необходимости доплачиваются платежи и пени. Это делается независимо от того, будет ли штраф.</span>
+        </li>
+        <li>
+          <b>Решение по составу</b>
+          <span>Если платёжного эффекта нет — оснований для ч. 2 ст. 16.2 нет (позиция КС РФ). Если есть — возбуждается дело и считается штраф.</span>
+        </li>
+        <li>
+          <b>Спор, если нужно</b>
+          <span>При несогласии — возражения, жалоба в вышестоящий таможенный орган, затем суд. Главный аргумент — расчёт, показывающий отсутствие влияния на платежи.</span>
+        </li>
+      </ol>
+
+      <div class="deadline">
+        <span class="box-title">Что подготовить заранее</span>
+        Расчёт платежей «до» и «после» уточнения веса, документы о весе нетто и стоимости, сведения о ставке пошлины, подтверждение уплаты. Без расчёта спор превращается в спор о формулировках.
+      </div>
+    </section>
+
+    <!-- 10 -->
+    <section class="card" id="oshibki">
+      <div class="section-kicker">Типичные заблуждения</div>
+      <h2>Частые ошибки</h2>
+      <ul>
+        <li>Считать, что за любое расхождение веса брутто автоматически штрафуют по ч. 2 ст. 16.2. Нет — нужен платёжный эффект.</li>
+        <li>Считать, что при отсутствии платёжного эффекта можно ничего не делать. Нет — декларацию нужно корректировать.</li>
+        <li>Путать ст. 16.1 и ст. 16.2. Первая — про прибытие и перевозчика, вторая — про декларирование и декларанта.</li>
+        <li>Путать вес брутто и вес нетто. Брутто — с упаковкой, нетто — без неё; в расчётах и в декларации это разные показатели.</li>
+        <li>Считать, что вес всегда влияет на таможенную стоимость. При адвалорной ставке — как правило, нет; при специфической — влияет напрямую.</li>
+        <li>Считать ошибку в весе «недекларированием» по ч. 1 ст. 16.2. Ч. 1 — про незаявленный товар, а не про неточность в его описании.</li>
+        <li>Ссылаться на поставщика как на причину. Обязанность обеспечить достоверность сведений лежит на декларанте.</li>
+      </ul>
+    </section>
+
+    <!-- 11 -->
+    <section class="card" id="checklist">
+      <div class="section-kicker">Практический инструмент</div>
+      <h2>Чек-лист: что делать при обнаружении расхождения</h2>
+      <ul class="checklist">
+        <li>Зафиксировать, что именно расходится: вес брутто, вес нетто, количество мест или всё сразу.</li>
+        <li>Проверить, участвует ли вес в расчёте платежа: какая ставка — адвалорная, специфическая или комбинированная.</li>
+        <li>Сравнить платёж «до» и «после» уточнения веса — по каждому товару, а не только по декларации в целом.</li>
+        <li>Проверить, не завязаны ли на вес льгота, преференция, запрет или ограничение.</li>
+        <li>Определить стадию: прибытие (ст. 16.1) или декларирование (ст. 16.2).</li>
+        <li>Подготовить корректировку ДТ и, если нужно, доплату платежей и пени.</li>
+        <li>Сохранить расчёт и документы, подтверждающие вес и стоимость, — это основа защиты.</li>
+        <li>Если возбуждено дело — проверить, есть ли в постановлении расчёт влияния на платежи.</li>
+      </ul>
+    </section>
+
+    <!-- 12 -->
+    <section class="card" id="corr">
+      <div class="section-kicker">Правки к исходным тезисам</div>
+      <h2>Что нужно исправить в черновиках и пересказах</h2>
+      <p class="lead">Несколько распространённых утверждений, которые звучат убедительно, но неверны.</p>
+
+      <div class="corr">
+        <div class="corr-item">
+          <span class="wrong">«За расхождение веса брутто всегда штрафуют по ч. 2 ст. 16.2»</span><br>
+          <span class="right">Верно: только если недостоверность повлияла или могла повлиять на платежи. Иначе состава нет — позиция КС РФ № 9-П.</span>
+        </div>
+        <div class="corr-item">
+          <span class="wrong">«Если платежи не изменились, можно ничего не делать»</span><br>
+          <span class="right">Верно: нарушение правил декларирования остаётся, декларацию нужно корректировать, возможен отказ в выпуске.</span>
+        </div>
+        <div class="corr-item">
+          <span class="wrong">«Расхождение веса при ввозе — это ст. 16.2»</span><br>
+          <span class="right">Верно: на этапе прибытия это ч. 3 ст. 16.1, и отвечает перевозчик, а не декларант.</span>
+        </div>
+        <div class="corr-item">
+          <span class="wrong">«Любое расхождение веса — это недекларирование по ч. 1 ст. 16.2»</span><br>
+          <span class="right">Верно: ч. 1 — про товар, вообще не заявленный в декларации. Неточность в весе заявленного товара — другая ситуация.</span>
+        </div>
+        <div class="corr-item">
+          <span class="wrong">«Вес брутто всегда влияет на таможенную стоимость»</span><br>
+          <span class="right">Верно: при адвалорной ставке стоимость определяется ценой сделки; вес становится базой при специфической ставке или когда он прямо участвует в расчёте.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 13 -->
+    <section class="card" id="gloss">
+      <div class="section-kicker">Словарь</div>
+      <h2>Глоссарий</h2>
+      <dl class="glossary">
+        <div><dt>ДТ</dt><dd>декларация на товары.</dd></div>
+        <div><dt>ТК ЕАЭС</dt><dd>Таможенный кодекс Евразийского экономического союза.</dd></div>
+        <div><dt>КоАП РФ</dt><dd>Кодекс Российской Федерации об административных правонарушениях.</dd></div>
+        <div><dt>КС РФ</dt><dd>Конституционный Суд Российской Федерации.</dd></div>
+        <div><dt>ФТС России</dt><dd>Федеральная таможенная служба.</dd></div>
+        <div><dt>Вес брутто</dt><dd>масса товара вместе с упаковкой и тарой.</dd></div>
+        <div><dt>Вес нетто</dt><dd>масса товара без упаковки.</dd></div>
+        <div><dt>Ч. 1 ст. 16.2</dt><dd>недекларирование товаров.</dd></div>
+        <div><dt>Ч. 2 ст. 16.2</dt><dd>недостоверные сведения, повлиявшие на платежи.</dd></div>
+        <div><dt>Ч. 3 ст. 16.2</dt><dd>недостоверные сведения и несоблюдение запретов/ограничений.</dd></div>
+        <div><dt>Ст. 16.1</dt><dd>нарушения порядка перемещения товаров, включая недостоверный вес при прибытии.</dd></div>
+        <div><dt>Платежи</dt><dd>таможенные пошлины и налоги (в первую очередь НДС), уплачиваемые при ввозе.</dd></div>
+        <div><dt>Корректировка ДТ</dt><dd>внесение изменений в сведения декларации после её подачи.</dd></div>
+        <div><dt>Декларант</dt><dd>лицо, которое декларирует товары и отвечает за достоверность сведений.</dd></div>
+      </dl>
+    </section>
+
+    <!-- 14 -->
+    <section class="card" id="summary">
+      <div class="section-kicker">Итог</div>
+      <h2>Резюме</h2>
+      <div class="summary">
+        <h3>Шесть тезисов, которые стоит запомнить</h3>
+        <ol>
+          <li>Вес брутто — обязательное сведение декларации (п. 1 ст. 106 ТК ЕАЭС), и за его точность отвечает декларант.</li>
+          <li>Расхождение веса — формальное нарушение, но не автоматический штраф.</li>
+          <li>По ч. 2 ст. 16.2 нужен платёжный эффект: освобождение от уплаты или занижение (позиция КС РФ № 9-П).</li>
+          <li>Нет эффекта — нет состава, но остаётся обязанность скорректировать декларацию и риск отказа в выпуске.</li>
+          <li>Расхождение при прибытии — это ч. 3 ст. 16.1 и перевозчик, а не декларант и не ст. 16.2.</li>
+          <li>Главный документ в любом споре — расчёт платежей «до» и «после», а не объяснения.</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- 15 -->
+    <section class="card sources" id="sources">
+      <div class="section-kicker">Первоисточники</div>
+      <h2>Источники</h2>
+
+      <article class="source">
+        <h3>Постановление Конституционного Суда РФ от 05.03.2024 № 9-П</h3>
+        <p class="req">По делу о проверке конституционности части 2 статьи 16.2 КоАП РФ в связи с жалобой на привлечение к ответственности за недостоверные сведения о весе брутто.</p>
+        <p><strong>Что подтверждает:</strong> ч. 2 ст. 16.2 не предполагает ответственности за недостоверный вес брутто, если это не повлияло и не могло повлиять на освобождение от уплаты платежей или на их занижение. <span class="tag tag-ks">КС РФ</span></p>
+        <p class="link"><a href="https://www.ksrf.ru">ksrf.ru</a> · <span class="flag">ТРЕБУЕТ ПРОВЕРКИ: точная дата, номер дела и дословный текст</span></p>
+      </article>
+
+      <article class="source">
+        <h3>Кодекс Российской Федерации об административных правонарушениях</h3>
+        <p class="req">Статья 16.2, части 1, 2 и 3; статья 16.1, часть 3.</p>
+        <p><strong>Что подтверждает:</strong> составы, субъекты и санкции за недекларирование, недостоверное декларирование и недостоверные сведения при прибытии. <span class="tag tag-norm">Норма</span></p>
+        <p class="link"><a href="https://www.consultant.ru/document/cons_doc_LAW_34661/">consultant.ru — КоАП РФ</a></p>
+      </article>
+
+      <article class="source">
+        <h3>Таможенный кодекс Евразийского экономического союза</h3>
+        <p class="req">Приложение к Договору о ТК ЕАЭС от 11.04.2017. Пункт 1 статьи 106; подпункт 1 пункта 1 статьи 84.</p>
+        <p><strong>Что подтверждает:</strong> перечень сведений в декларации, включая вес брутто и вес нетто; обязанность декларанта произвести декларирование. <span class="tag tag-norm">Норма</span></p>
+        <p class="link"><a href="https://www.consultant.ru/document/cons_doc_LAW_215315/">consultant.ru — ТК ЕАЭС</a> · <a href="https://eec.eaeunion.org/comission/department/dep_tamoj_zak/tk_eaes.php">eec.eaeunion.org</a></p>
+      </article>
+
+      <article class="source">
+        <h3>Информация ФТС России от 21.03.2023</h3>
+        <p class="req">Разъяснение по вопросам квалификации расхождений веса брутто в декларации.</p>
+        <p><strong>Что подтверждает:</strong> позицию службы о том, что при отсутствии влияния на платежи признаки состава ч. 2 ст. 16.2 отсутствуют. <span class="tag tag-fts">ФТС</span></p>
+        <p class="link"><a href="https://customs.gov.ru">customs.gov.ru</a> · <span class="flag">ТРЕБУЕТ ПРОВЕРКИ: точные реквизиты письма/информации и прямая ссылка</span></p>
+      </article>
+
+      <article class="source">
+        <h3>Судебная практика 2024–2025 годов</h3>
+        <p class="req">Акты арбитражных судов, вынесенные после Постановления № 9-П.</p>
+        <p><strong>Что подтверждает:</strong> тенденцию прекращения производств по ч. 2 ст. 16.2 при отсутствии влияния недостоверного веса на платежи. <span class="tag tag-court">Суды</span></p>
+        <p class="link"><span class="flag">ТРЕБУЕТ ПРОВЕРКИ: подобрать конкретные дела по картотеке kad.arbitr.ru и указать номера</span></p>
+      </article>
+
+      <div class="actual">
+        <strong>Информация актуальна на 06.11.2026.</strong> Перед применением сверь действующие редакции КоАП РФ, ТК ЕАЭС и текст Постановления КС РФ № 9-П, а также проверь наличие более поздних разъяснений ФТС и судебных актов.
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    Памятка подготовлена для личного использования участником ВЭД. Не является юридической консультацией. Квалификация зависит от конкретного расчёта платежей и документов по сделке.
+  </footer>
+
+</div>
+
+<a class="up" href="#top" aria-label="Наверх">↑</a>
+
+<style>
+.nav-back { position: fixed; bottom: 24px; right: 24px; background: #0d3b66; color: #fff !important; padding: 10px 16px; border-radius: 8px; text-decoration: none; font-family: "Segoe UI", Arial, sans-serif; font-size: 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 9999; transition: background 0.2s; font-weight: 600; }
+.nav-back:hover { background: #1e5a99; }
+</style>
+<a href="index.html" class="nav-back">← Назад в меню</a>
+</body>
+</html>
